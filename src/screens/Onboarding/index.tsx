@@ -13,11 +13,12 @@ interface Props {}
 const Onboarding: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <OnboardingExport />
+      <OnboardingWelcome />
+      <View style={styles.absoluteBottomContainer}>
+        <Indicators size={15} gap={15} indicators={3} activeIndex={0} />
 
-      <Indicators size={15} gap={15} indicators={3} activeIndex={0} />
-
-      <Button title="Test" />
+        <Button title="Next" />
+      </View>
     </SafeAreaView>
   );
 };
@@ -26,7 +27,16 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
     flex: 1,
-    padding: Spacing.lg,
+    // padding: Spacing.lg,
+  },
+  absoluteBottomContainer: {
+    position: 'absolute',
+    width: '100%',
+    bottom: Spacing.xxl,
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.xl,
+    // alignItems: 'center',
+    // backgroundColor: 'red',
   },
 });
 
