@@ -4,14 +4,16 @@ import { StyleSheet, Pressable, Text } from 'react-native';
 
 interface Props {
   title: string;
+  onPress?(): void;
 }
 
-const Button: FC<Props> = props => {
+const Button: FC<Props> = ({ title, onPress }) => {
   return (
     <Pressable
+      onPress={onPress}
       style={({ pressed }) => [styles.buttonStyle, pressed && styles.pressed]}
     >
-      <Text style={styles.buttonText}>{props.title}</Text>
+      <Text style={styles.buttonText}>{title}</Text>
     </Pressable>
   );
 };
