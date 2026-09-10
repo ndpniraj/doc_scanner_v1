@@ -3,7 +3,7 @@
   "compilerOptions": {
     "paths":{
       "@/*": ["./src/*"],
-      "@theme": ["./src/theme"]
+      "@theme": ["./src/theme"],
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
