@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props {}
@@ -29,7 +29,18 @@ const DATA = [
 const FlatListStudy: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      {DATA.map(item => {
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => {
+          return (
+            <View style={[styles.item, { backgroundColor: item.color }]}>
+              <Text style={styles.title}>{item.title}</Text>
+            </View>
+          );
+        }}
+        keyExtractor={item => item.id}
+      />
+      {/* {DATA.map(item => {
         return (
           <View
             style={[styles.item, { backgroundColor: item.color }]}
@@ -38,7 +49,7 @@ const FlatListStudy: FC<Props> = () => {
             <Text style={styles.title}>{item.title}</Text>
           </View>
         );
-      })}
+      })} */}
     </SafeAreaView>
   );
 };
