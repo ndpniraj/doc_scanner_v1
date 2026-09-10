@@ -6,6 +6,7 @@ import OnboardingWelcome from './OnboardingWelcome';
 import OnboardingAutoScan from './OnboardingAutoScan';
 import OnboardingExport from './OnboardingExport';
 import Button from '@common_comp/Button';
+import Indicators from '@/components/common/Indicators';
 
 interface Props {}
 
@@ -13,6 +14,9 @@ const Onboarding: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       <OnboardingExport />
+
+      <Indicators indicators={3} activeIndex={1} />
+
       <Button title="Test" />
     </SafeAreaView>
   );
