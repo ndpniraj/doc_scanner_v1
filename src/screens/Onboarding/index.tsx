@@ -15,7 +15,7 @@ const Onboarding: FC<Props> = () => {
     <SafeAreaView style={styles.container}>
       <OnboardingExport />
 
-      <Indicators indicators={3} activeIndex={1} />
+      <Indicators size={15} gap={15} indicators={3} activeIndex={0} />
 
       <Button title="Test" />
     </SafeAreaView>
