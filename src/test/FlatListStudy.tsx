@@ -31,6 +31,8 @@ const FlatListStudy: FC<Props> = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={DATA}
+        // horizontal
+        // showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
             <View style={[styles.item, { backgroundColor: item.color }]}>
