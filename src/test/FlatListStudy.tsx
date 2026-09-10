@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props {}
@@ -26,13 +26,19 @@ const DATA = [
   { id: '20', title: 'Fig', color: '#6A4C93' },
 ];
 
+const { height, width } = Dimensions.get('screen');
+
 const FlatListStudy: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={DATA}
         // horizontal
-        // showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        snapToInterval={height}
+        snapToAlignment="start"
+        disableIntervalMomentum
+        decelerationRate="fast"
         renderItem={({ item }) => {
           return (
             <View style={[styles.item, { backgroundColor: item.color }]}>
@@ -60,9 +66,11 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   item: {
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 8,
-    borderRadius: 8,
+    // marginVertical: 8,
+    // marginHorizontal: 8,
+    // borderRadius: 8,
+    width,
+    height,
     justifyContent: 'center',
     alignItems: 'center',
   },
