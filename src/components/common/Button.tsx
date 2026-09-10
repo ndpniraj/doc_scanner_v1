@@ -8,7 +8,9 @@ interface Props {
 
 const Button: FC<Props> = props => {
   return (
-    <Pressable style={styles.buttonStyle}>
+    <Pressable
+      style={({ pressed }) => [styles.buttonStyle, pressed && styles.pressed]}
+    >
       <Text style={styles.buttonText}>{props.title}</Text>
     </Pressable>
   );
@@ -21,6 +23,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: Spacing.sm,
+  },
+  pressed: {
+    opacity: 0.7,
   },
   buttonText: {
     color: Colors.onPrimary,
