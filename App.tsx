@@ -1,10 +1,12 @@
-import { Text, View, Button } from 'react-native';
+import { StatusBar, Text, View, Button, useColorScheme } from 'react-native';
 import AppButton from './src/components/AppButton';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const App = () => {
+  const isDarkMode = useColorScheme() === 'dark';
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <SafeAreaView>
         <View style={{}}>
           {/* <Image source={require('./src/assets/scanner.png')} /> */}
