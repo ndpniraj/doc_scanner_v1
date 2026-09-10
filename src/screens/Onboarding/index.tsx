@@ -1,18 +1,32 @@
 import { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Spacing } from '@theme';
+import { Colors, FontSize, FontWeight, Spacing } from '@theme';
 
 interface Props {}
 
 const Onboarding: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.commonBox, { backgroundColor: 'white' }]}>
-        <Text style={styles.header}>Hello</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={require('../../assets/scanner.png')}
+          resizeMode="contain"
+        />
       </View>
-      <View style={[styles.commonBox, { backgroundColor: 'tomato' }]}>
-        <Text style={styles.header}>Hello</Text>
+
+      <View style={styles.bottomContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Scan Anything.</Text>
+          <Text style={styles.header}>Save Everything.</Text>
+        </View>
+
+        <View style={styles.subHeaderContainer}>
+          <Text style={styles.subHeader}>
+            Scan documents, receipts, notes and more in high quality.
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -20,22 +34,41 @@ const Onboarding: FC<Props> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'pink',
-    // width: '100%',
-    // height: '100%',
-    // flexDirection: 'row',
-    // gap: 50,
+    backgroundColor: Colors.background,
     flex: 1,
     padding: Spacing.lg,
   },
-  commonBox: {
+  imageContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  image: {
+    width: '80%',
+    height: '80%',
+  },
+  bottomContainer: {
     flex: 1,
+    gap: Spacing.md,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    gap: Spacing.xs,
   },
   header: {
-    fontSize: 30,
-    color: 'blue',
+    fontSize: FontSize.title,
+    fontWeight: FontWeight.bold,
+    color: Colors.text,
+  },
+  subHeaderContainer: {
+    alignItems: 'center',
+    paddingHorizontal: Spacing.xxl,
+  },
+  subHeader: {
+    textAlign: 'center',
+    fontSize: FontSize.body,
+    color: Colors.text,
+    fontWeight: FontWeight.semibold,
   },
 });
 
