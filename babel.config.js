@@ -8,6 +8,7 @@ module.exports = {
         alias: {
           '@': './src',
           '@theme': './src/theme',
+          '@common_comp': './src/components/common',
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
       },

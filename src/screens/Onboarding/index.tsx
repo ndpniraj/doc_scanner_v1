@@ -2,34 +2,12 @@ import { FC } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, FontSize, FontWeight, Spacing } from '@theme';
+import OnboardingWelcome from './OnboardingWelcome';
 
 interface Props {}
 
 const Onboarding: FC<Props> = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require('../../assets/scanner.png')}
-          resizeMode="contain"
-        />
-      </View>
-
-      <View style={styles.bottomContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.header}>Scan Anything.</Text>
-          <Text style={styles.header}>Save Everything.</Text>
-        </View>
-
-        <View style={styles.subHeaderContainer}>
-          <Text style={styles.subHeader}>
-            Scan documents, receipts, notes and more in high quality.
-          </Text>
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+  return <OnboardingWelcome />;
 };
 
 const styles = StyleSheet.create({

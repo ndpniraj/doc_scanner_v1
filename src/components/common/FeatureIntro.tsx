@@ -1,17 +1,20 @@
 import { FC } from 'react';
 import { Image, ImageSource, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, FontSize, FontWeight, Spacing } from '@theme';
 
-interface Props {
+export interface FeatureIntroProps {
   illustration: ImageSource;
   headers: string[];
   subHeader: string;
 }
 
-const FeatureIntro: FC<Props> = ({ headers, illustration, subHeader }) => {
+const FeatureIntro: FC<FeatureIntroProps> = ({
+  headers,
+  illustration,
+  subHeader,
+}) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -33,7 +36,7 @@ const FeatureIntro: FC<Props> = ({ headers, illustration, subHeader }) => {
           <Text style={styles.subHeader}>{subHeader}</Text>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
