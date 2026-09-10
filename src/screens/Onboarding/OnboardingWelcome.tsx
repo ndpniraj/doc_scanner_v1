@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
 import OnboardingCommon from './OnboardingCommon';
 
 interface Props {}
@@ -13,9 +12,5 @@ const OnboardingWelcome: FC<Props> = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default OnboardingWelcome;

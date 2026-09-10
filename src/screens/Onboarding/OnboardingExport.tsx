@@ -1,14 +1,16 @@
 import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import OnboardingCommon from './OnboardingCommon';
 
 interface Props {}
 
 const OnboardingExport: FC<Props> = () => {
-  return <View style={styles.container}></View>;
+  return (
+    <OnboardingCommon
+      illustration={require('../../assets/scan_export.png')}
+      headers={['Organize. Export.', 'Anywhere.']}
+      subHeader="Save, share, and export your scans as PDF or images with ease."
+    />
+  );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default OnboardingExport;

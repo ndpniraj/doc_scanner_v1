@@ -1,14 +1,16 @@
 import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import OnboardingCommon from './OnboardingCommon';
 
 interface Props {}
 
 const OnboardingAutoScan: FC<Props> = () => {
-  return <View style={styles.container}></View>;
+  return (
+    <OnboardingCommon
+      illustration={require('../../assets/scan_doc.png')}
+      headers={['Auto Detect', 'Scan Perfectly']}
+      subHeader="Our AI finds edges and captures your documents with precision."
+    />
+  );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default OnboardingAutoScan;
