@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Spacing } from '../../theme/spacing';
 
 interface Props {}
 
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // gap: 50,
     flex: 1,
+    padding: Spacing.lg,
   },
   commonBox: {
     justifyContent: 'center',
