@@ -2,6 +2,7 @@ import { FC, JSX, useRef, useState } from 'react';
 import {
   Dimensions,
   FlatList,
+  FlatListProps,
   Pressable,
   StyleSheet,
   Text,
@@ -16,6 +17,8 @@ import Button from '@common_comp/Button';
 import Indicators from '@common_comp/Indicators';
 
 interface Props {}
+
+type ItemsChangedHandler = FlatListProps<View>['onViewableItemsChanged'];
 
 const getOnboardingScreens = (data: JSX.Element[]) => {
   const { width, height } = Dimensions.get('screen');
@@ -37,6 +40,11 @@ const Onboarding: FC<Props> = () => {
     flatListRef.current?.scrollToEnd();
   };
 
+  const handleItemsChanged = useRef<ItemsChangedHandler>(info => {
+    const activeSlide = info.viewableItems[0].index || 0;
+    setActiveSlideIndex(activeSlide);
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <Pressable onPress={handleSkip} style={styles.skipBtn}>
@@ -52,6 +60,7 @@ const Onboarding: FC<Props> = () => {
         pagingEnabled
         horizontal
         showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={handleItemsChanged.current}
       />
 
       <View style={styles.absoluteBottomContainer}>
