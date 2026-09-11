@@ -1,4 +1,11 @@
-import { StatusBar, Text, View, Button, useColorScheme } from 'react-native';
+import {
+  StatusBar,
+  Text,
+  View,
+  Button,
+  useColorScheme,
+  Alert,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Onboarding from './src/screens/Onboarding';
 
@@ -7,7 +14,11 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Onboarding />
+      <Onboarding
+        onGetStarted={() => {
+          Alert.alert('Getting Started');
+        }}
+      />
     </SafeAreaProvider>
   );
 };

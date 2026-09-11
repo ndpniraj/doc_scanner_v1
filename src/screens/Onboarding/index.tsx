@@ -16,7 +16,9 @@ import OnboardingExport from './OnboardingExport';
 import Button from '@common_comp/Button';
 import Indicators from '@common_comp/Indicators';
 
-interface Props {}
+interface Props {
+  onGetStarted?(): void;
+}
 
 type ItemsChangedHandler = FlatListProps<View>['onViewableItemsChanged'];
 
@@ -27,7 +29,7 @@ const getOnboardingScreens = (data: JSX.Element[]) => {
   });
 };
 
-const Onboarding: FC<Props> = () => {
+const Onboarding: FC<Props> = ({ onGetStarted }) => {
   const flatListRef = useRef<FlatList>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const onboardingScreens = getOnboardingScreens([
@@ -38,6 +40,12 @@ const Onboarding: FC<Props> = () => {
 
   const handleSkip = () => {
     flatListRef.current?.scrollToEnd();
+  };
+
+  const handleNext = () => {
+    if (activeSlideIndex >= onboardingScreens.length - 1)
+      return onGetStarted && onGetStarted();
+    flatListRef.current?.scrollToIndex({ index: activeSlideIndex + 1 });
   };
 
   const handleItemsChanged = useRef<ItemsChangedHandler>(info => {
@@ -72,11 +80,7 @@ const Onboarding: FC<Props> = () => {
         />
 
         <Button
-          onPress={() => {
-            setActiveSlideIndex(
-              Math.min(activeSlideIndex + 1, onboardingScreens.length - 1),
-            );
-          }}
+          onPress={handleNext}
           title={
             activeSlideIndex == onboardingScreens.length - 1
               ? 'Get Started'
