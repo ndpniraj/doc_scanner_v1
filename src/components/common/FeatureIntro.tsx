@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Image, ImageSource, StyleSheet, Text, View } from 'react-native';
 import { Colors, FontSize, FontWeight, Spacing } from '@theme';
 
@@ -6,12 +6,14 @@ export interface FeatureIntroProps {
   illustration: ImageSource;
   headers: string[];
   subHeader: string;
+  children?: ReactNode;
 }
 
 const FeatureIntro: FC<FeatureIntroProps> = ({
   headers,
   illustration,
   subHeader,
+  children,
 }) => {
   return (
     <View style={styles.container}>
@@ -35,6 +37,8 @@ const FeatureIntro: FC<FeatureIntroProps> = ({
         <View style={styles.subHeaderContainer}>
           <Text style={styles.subHeader}>{subHeader}</Text>
         </View>
+
+        {children}
       </View>
     </View>
   );

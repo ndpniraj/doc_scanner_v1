@@ -14,11 +14,11 @@ const EmptyDocuments: FC<Props> = () => {
         illustration={require('../../assets/folder.png')}
         headers={['No documents yet?']}
         subHeader="Scan your first document to get started."
-      />
-
-      <View style={styles.bottomContainer}>
-        <Button title="Scan your first document" />
-      </View>
+      >
+        <View style={styles.bottomContainer}>
+          <Button title="Scan your first document" />
+        </View>
+      </FeatureIntro>
     </SafeAreaView>
   );
 };
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     paddingHorizontal: Spacing.lg,
+    marginTop: Spacing.xxl,
   },
 });
 
