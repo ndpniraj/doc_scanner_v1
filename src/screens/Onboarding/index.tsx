@@ -1,5 +1,12 @@
-import { FC, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { FC, JSX, useState } from 'react';
+import {
+  Dimensions,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, FontSize, FontWeight, Spacing } from '@theme';
 import OnboardingWelcome from './OnboardingWelcome';
@@ -10,13 +17,20 @@ import Indicators from '@common_comp/Indicators';
 
 interface Props {}
 
+const getOnboardingScreens = (data: JSX.Element[]) => {
+  const { width, height } = Dimensions.get('screen');
+  return data.map(item => {
+    return <View style={{ width, height }}>{item}</View>;
+  });
+};
+
 const Onboarding: FC<Props> = () => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-  const onboardingScreens = [
+  const onboardingScreens = getOnboardingScreens([
     <OnboardingWelcome />,
     <OnboardingAutoScan />,
     <OnboardingExport />,
-  ];
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,7 +43,15 @@ const Onboarding: FC<Props> = () => {
         <Text style={styles.skipBtnLabel}>SKIP</Text>
       </Pressable>
 
-      {onboardingScreens[activeSlideIndex]}
+      <FlatList
+        data={onboardingScreens}
+        renderItem={({ item }) => {
+          return item;
+        }}
+        pagingEnabled
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
 
       <View style={styles.absoluteBottomContainer}>
         <Indicators
