@@ -1,21 +1,15 @@
 import { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import EmptyDocuments from '@screens/EmptyDocuments';
+import DocumentHome from '@screens/DocumentHome';
 
 interface Props {}
 
-const HomeScreen: FC<Props> = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'blue' }}>
-        Home
-      </Text>
-    </SafeAreaView>
-  );
-};
+const documents = [];
 
-const styles = StyleSheet.create({
-  container: {},
-});
+const HomeScreen: FC<Props> = () => {
+  if (!documents.length) return <EmptyDocuments />;
+
+  return <DocumentHome />;
+};
 
 export default HomeScreen;
