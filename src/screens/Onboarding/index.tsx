@@ -1,4 +1,4 @@
-import { FC, JSX, useState } from 'react';
+import { FC, JSX, useRef, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -25,6 +25,7 @@ const getOnboardingScreens = (data: JSX.Element[]) => {
 };
 
 const Onboarding: FC<Props> = () => {
+  const flatListRef = useRef<FlatList>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const onboardingScreens = getOnboardingScreens([
     <OnboardingWelcome />,
@@ -32,18 +33,18 @@ const Onboarding: FC<Props> = () => {
     <OnboardingExport />,
   ]);
 
+  const handleSkip = () => {
+    flatListRef.current?.scrollToEnd();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable
-        onPress={() => {
-          setActiveSlideIndex(onboardingScreens.length - 1);
-        }}
-        style={styles.skipBtn}
-      >
+      <Pressable onPress={handleSkip} style={styles.skipBtn}>
         <Text style={styles.skipBtnLabel}>SKIP</Text>
       </Pressable>
 
       <FlatList
+        ref={flatListRef}
         data={onboardingScreens}
         renderItem={({ item }) => {
           return item;
