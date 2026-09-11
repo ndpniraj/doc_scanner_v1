@@ -4,7 +4,8 @@
     "paths":{
       "@/*": ["./src/*"],
       "@theme": ["./src/theme"],
-      "@common_comp/*": ["./src/components/common/*"]
+      "@common_comp/*": ["./src/components/common/*"],
+      "@screens/*": ["./src/screens/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

@@ -9,6 +9,7 @@ module.exports = {
           '@': './src',
           '@theme': './src/theme',
           '@common_comp': './src/components/common',
+          '@screens': ['./src/screens'],
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
       },
