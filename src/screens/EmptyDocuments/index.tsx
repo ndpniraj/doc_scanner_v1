@@ -1,24 +1,30 @@
-import { Spacing } from '@/theme';
+import { Colors, Spacing } from '@/theme';
 import Button from '@common_comp/Button';
 import FeatureIntro from '@common_comp/FeatureIntro';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EvilIcons } from '@react-native-vector-icons/evil-icons';
 
 interface Props {}
 
 const EmptyDocuments: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <EvilIcons name="arrow-down" size={150} />
       <FeatureIntro
         illustration={require('../../assets/folder.png')}
         headers={['No documents yet?']}
         subHeader="Scan your first document to get started."
       >
         <View style={styles.bottomContainer}>
-          <Button title="Scan your first document" />
+          <Button
+            showIcon
+            icon={{
+              name: 'camera',
+              size: 30,
+              color: Colors.onPrimary,
+            }}
+            title="Scan your first document"
+          />
         </View>
       </FeatureIntro>
     </SafeAreaView>
