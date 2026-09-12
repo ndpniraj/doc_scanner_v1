@@ -1,3 +1,4 @@
+import PreviewHeader from '@/components/PreviewHeader';
 import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -12,12 +13,7 @@ const DocPreview: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <IconButton
-        icon={{
-          name: 'activity',
-          size: 50,
-        }}
-      />
+      <PreviewHeader />
       {/* Image */}
 
       {/* Footer */}

@@ -14,10 +14,13 @@ interface Props {
 const IconButton: FC<Props> = ({ size = 55, icon }) => {
   return (
     <Pressable
-      style={{
-        width: size,
-        height: size,
-      }}
+      style={[
+        styles.container,
+        {
+          width: size,
+          height: size,
+        },
+      ]}
     >
       <Feather name={icon.name} size={icon.size || 25} />
     </Pressable>
@@ -25,7 +28,10 @@ const IconButton: FC<Props> = ({ size = 55, icon }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default IconButton;
