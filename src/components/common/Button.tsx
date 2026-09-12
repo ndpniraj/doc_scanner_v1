@@ -20,6 +20,7 @@ type IconProps =
 type Props = IconProps & {
   title: string;
   reverseStyle?: boolean;
+  enableShadow?: boolean;
   onPress?(): void;
 };
 
@@ -28,6 +29,7 @@ const Button: FC<Props> = ({
   reverseStyle,
   showIcon,
   icon,
+  enableShadow,
   onPress,
 }) => {
   const iconAtRightSide = icon?.side === 'right';
@@ -45,6 +47,7 @@ const Button: FC<Props> = ({
         styles.buttonCommon,
         buttonStyle,
         pressed && styles.pressed,
+        enableShadow && styles.shadow,
       ]}
     >
       {showIcon && !iconAtRightSide && (
@@ -72,6 +75,17 @@ const styles = StyleSheet.create({
   },
   buttonStyleReverse: {
     backgroundColor: Colors.onPrimary,
+  },
+  shadow: {
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: 2,
+        blurRadius: 7,
+        color: 'rgba(0, 0, 0, 0.2)',
+        spreadDistance: 0,
+      },
+    ],
   },
   pressed: {
     opacity: 0.7,

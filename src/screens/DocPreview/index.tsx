@@ -27,6 +27,7 @@ const DocPreview: FC<Props> = () => {
             icon={{ name: 'undo', size: 30 }}
             title="Retake"
             reverseStyle
+            enableShadow
           />
         </View>
         <View style={styles.footerBtn}>
