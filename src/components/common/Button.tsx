@@ -19,20 +19,38 @@ type IconProps =
 
 type Props = IconProps & {
   title: string;
+  reverseStyle?: boolean;
   onPress?(): void;
 };
 
-const Button: FC<Props> = ({ title, showIcon, icon, onPress }) => {
+const Button: FC<Props> = ({
+  title,
+  reverseStyle,
+  showIcon,
+  icon,
+  onPress,
+}) => {
   const iconAtRightSide = icon?.side === 'right';
+  const buttonStyle = reverseStyle
+    ? styles.buttonStyleReverse
+    : styles.buttonStyle;
+  const buttonTextStyle = reverseStyle
+    ? styles.buttonStyleReverse
+    : styles.buttonText;
+
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.buttonStyle, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.buttonCommon,
+        buttonStyle,
+        pressed && styles.pressed,
+      ]}
     >
       {showIcon && !iconAtRightSide && (
         <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
       )}
-      <Text style={styles.buttonText}>{title}</Text>
+      <Text style={[buttonTextStyle, styles.buttonTextCommon]}>{title}</Text>
       {showIcon && iconAtRightSide && (
         <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
       )}
@@ -41,8 +59,7 @@ const Button: FC<Props> = ({ title, showIcon, icon, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  buttonStyle: {
-    backgroundColor: Colors.primary,
+  buttonCommon: {
     height: 55,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -50,13 +67,24 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.sm,
     gap: Spacing.xs,
   },
+  buttonStyle: {
+    backgroundColor: Colors.primary,
+  },
+  buttonStyleReverse: {
+    backgroundColor: Colors.onPrimary,
+  },
   pressed: {
     opacity: 0.7,
   },
-  buttonText: {
-    color: Colors.onPrimary,
+  buttonTextCommon: {
     fontWeight: FontWeight.semibold,
     fontSize: FontSize.body,
+  },
+  buttonText: {
+    color: Colors.onPrimary,
+  },
+  buttonTextReverse: {
+    color: Colors.primary,
   },
 });
 

@@ -1,4 +1,6 @@
+import Button from '@/components/common/Button';
 import PreviewHeader from '@/components/PreviewHeader';
+import { Spacing } from '@/theme';
 import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -17,12 +19,34 @@ const DocPreview: FC<Props> = () => {
       {/* Image */}
 
       {/* Footer */}
+
+      <View style={styles.footer}>
+        <View style={styles.footerBtn}>
+          <Button
+            showIcon
+            icon={{ name: 'undo', size: 30 }}
+            title="Retake"
+            reverseStyle
+          />
+        </View>
+        <View style={styles.footerBtn}>
+          <Button title="Use Photo" />
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {},
+  footer: {
+    flexDirection: 'row',
+    padding: Spacing.lg,
+    gap: Spacing.lg,
+  },
+  footerBtn: {
+    flex: 1,
+  },
 });
 
 export default DocPreview;
