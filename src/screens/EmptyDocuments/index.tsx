@@ -5,9 +5,11 @@ import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-interface Props {}
+interface Props {
+  onScanBtnPress?(): void;
+}
 
-const EmptyDocuments: FC<Props> = () => {
+const EmptyDocuments: FC<Props> = ({ onScanBtnPress }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FeatureIntro
@@ -24,6 +26,7 @@ const EmptyDocuments: FC<Props> = () => {
               color: Colors.onPrimary,
             }}
             title="Scan your first document"
+            onPress={onScanBtnPress}
           />
         </View>
       </FeatureIntro>

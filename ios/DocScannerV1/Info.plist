@@ -54,6 +54,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access your camera to take document photos.</string>
+
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>EvilIcons.ttf</string>
