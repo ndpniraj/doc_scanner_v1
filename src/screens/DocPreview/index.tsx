@@ -1,3 +1,4 @@
+import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +12,12 @@ const DocPreview: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-
+      <IconButton
+        icon={{
+          name: 'activity',
+          size: 50,
+        }}
+      />
       {/* Image */}
 
       {/* Footer */}
