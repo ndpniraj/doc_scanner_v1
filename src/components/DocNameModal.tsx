@@ -1,25 +1,41 @@
-import { Colors, Spacing } from '@/theme';
-import { FC } from 'react';
-import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Colors, FontSize, FontWeight, Spacing } from '@/theme';
+import { FC, useState } from 'react';
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import Button from '@common_comp/Button';
 
 interface Props {
+  title: string;
   visible: boolean;
   onClose(): void;
   onSave(name: string): void;
 }
 
-const DocNameModal: FC<Props> = ({ visible, onClose, onSave }) => {
+const DocNameModal: FC<Props> = ({ title, visible, onClose, onSave }) => {
+  const [name, setName] = useState('');
   return (
-    <Modal transparent visible>
+    <Modal transparent visible={visible}>
       <View style={styles.overlay}>
         <Pressable onPress={onClose} style={styles.backdrop} />
         <View style={styles.card}>
-          <TextInput placeholder="This is input" />
+          <Text style={styles.title}>{title}</Text>
+          <TextInput
+            placeholder="Enter document name"
+            value={name}
+            onChangeText={setName}
+            placeholderTextColor="#94a3d7"
+            style={styles.input}
+          />
 
           <View style={styles.actions}>
             <Button title="Cancel" reverseStyle onPress={onClose} />
-            <Button title="Use It" onPress={() => onSave('')} />
+            <Button title="Use It" onPress={() => onSave(name)} />
           </View>
         </View>
       </View>
@@ -41,12 +57,27 @@ const styles = StyleSheet.create({
     width: '85%',
     backgroundColor: Colors.background,
     borderRadius: Spacing.md,
+    gap: Spacing.lg,
     padding: Spacing.lg,
+  },
+  title: {
+    fontSize: FontSize.body,
+    color: Colors.text,
+    fontWeight: FontWeight.semibold,
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: Spacing.md,
+  },
+  input: {
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 6,
+    color: Colors.text,
   },
 });
 

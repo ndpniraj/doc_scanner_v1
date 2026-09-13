@@ -59,7 +59,12 @@ const DocPreview: FC<Props> = ({ route }) => {
           }}
         />
       </SafeAreaView>
-      <DocNameModal onClose={hideDocNameModal} visible={showDocNameModal} />
+      <DocNameModal
+        title="Document Name (Helps to find later)"
+        onClose={hideDocNameModal}
+        visible={showDocNameModal}
+        onSave={() => {}}
+      />
     </>
   );
 };
