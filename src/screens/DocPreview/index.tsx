@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import PreviewHeader from '@/components/PreviewHeader';
+import PreviewImageCard from '@/components/PreviewImageCard';
 import { Colors, Spacing } from '@/theme';
 import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
@@ -17,13 +18,10 @@ const DocPreview: FC<Props> = () => {
       {/* Header */}
       <PreviewHeader />
       {/* Image */}
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={{ uri: image }}
-          resizeMode="contain"
-        />
-      </View>
+      <PreviewImageCard
+        imageSource={image}
+        badge={<View style={{ padding: 10, backgroundColor: 'black' }} />}
+      />
 
       {/* Footer */}
 
@@ -47,14 +45,6 @@ const DocPreview: FC<Props> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  imageContainer: {
-    flex: 1,
-    padding: Spacing.lg,
-    backgroundColor: Colors.surface,
-  },
-  image: {
     flex: 1,
   },
   footer: {
