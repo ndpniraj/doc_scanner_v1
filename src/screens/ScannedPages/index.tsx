@@ -19,7 +19,7 @@ const ScannedPages: FC<Props> = () => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <CommonHeader
-        pageTitle="Preview"
+        pageTitle="Scanned Pages"
         rightContent={
           <IconButton
             icon={{
@@ -29,7 +29,10 @@ const ScannedPages: FC<Props> = () => {
         }
       />
       {/* Image */}
-      <PreviewImageCard imageSource={image} badge={<PageBadge />} />
+      <PreviewImageCard
+        imageSource={image}
+        badge={<PageBadge total={3} current={1} />}
+      />
 
       {/* Footer */}
       <ScreenFooter
