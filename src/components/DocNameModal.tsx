@@ -1,5 +1,5 @@
 import { Colors, FontSize, FontWeight, Spacing } from '@/theme';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Modal,
   Pressable,
@@ -13,12 +13,23 @@ import Button from '@common_comp/Button';
 interface Props {
   title: string;
   visible: boolean;
+  initialName: string;
   onClose(): void;
   onSave(name: string): void;
 }
 
-const DocNameModal: FC<Props> = ({ title, visible, onClose, onSave }) => {
+const DocNameModal: FC<Props> = ({
+  initialName,
+  title,
+  visible,
+  onClose,
+  onSave,
+}) => {
   const [name, setName] = useState('');
+
+  useEffect(() => {
+    if (visible) setName(initialName);
+  }, [visible, initialName]);
   return (
     <Modal transparent visible={visible}>
       <View style={styles.overlay}>

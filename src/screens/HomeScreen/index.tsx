@@ -18,12 +18,13 @@ const HomeScreen: FC<Props> = () => {
 
   const handleScanDocs = async () => {
     const image = {
-      name: '',
+      name: 'New Doc',
       source: '',
     };
     if (await isIOSSimulator()) {
       const asset = await selectImage();
       if (asset?.uri) image.source = asset.uri;
+      if (asset?.fileName) image.name = asset.fileName;
     } else {
       const { scannedImages } = await DocumentScanner.scanDocument();
       if (Array.isArray(scannedImages)) {
