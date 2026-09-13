@@ -1,5 +1,5 @@
 import Button from '@/components/common/Button';
-import PreviewHeader from '@/components/PreviewHeader';
+import CommonHeader from '@/components/CommonHeader';
 import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
 import { Colors, Spacing } from '@/theme';
@@ -17,7 +17,16 @@ const DocPreview: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <PreviewHeader />
+      <CommonHeader
+        pageTitle="Preview"
+        rightContent={
+          <IconButton
+            icon={{
+              name: 'more-vertical',
+            }}
+          />
+        }
+      />
       {/* Image */}
       <PreviewImageCard
         imageSource={image}

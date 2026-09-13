@@ -1,12 +1,15 @@
 import { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Header from '@common_comp/Header';
+import Header, { HeaderProps } from '@common_comp/Header';
 import IconButton from '@common_comp/IconButton';
 import { FontSize, FontWeight, Spacing } from '@/theme';
 
-interface Props {}
+interface Props {
+  pageTitle: string;
+  rightContent: HeaderProps['rightContent'];
+}
 
-const PreviewHeader: FC<Props> = () => {
+const CommonHeader: FC<Props> = ({ pageTitle, rightContent }) => {
   return (
     <View style={styles.container}>
       <Header
@@ -18,14 +21,8 @@ const PreviewHeader: FC<Props> = () => {
             }}
           />
         }
-        centerContent={<Text style={styles.pageTitle}>Preview</Text>}
-        rightContent={
-          <IconButton
-            icon={{
-              name: 'more-vertical',
-            }}
-          />
-        }
+        centerContent={<Text style={styles.pageTitle}>{pageTitle}</Text>}
+        rightContent={rightContent}
       />
     </View>
   );
@@ -42,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PreviewHeader;
+export default CommonHeader;

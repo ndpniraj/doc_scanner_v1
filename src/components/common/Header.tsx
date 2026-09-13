@@ -1,14 +1,14 @@
 import { FC, ReactNode } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
-interface Props {
+export interface HeaderProps {
   leftContent?: ReactNode;
   centerContent?: ReactNode;
   rightContent?: ReactNode;
   style?: ViewStyle;
 }
 
-const Header: FC<Props> = ({
+const Header: FC<HeaderProps> = ({
   style,
   leftContent,
   centerContent,
