@@ -42,6 +42,8 @@ const DocNameModal: FC<Props> = ({
             onChangeText={setName}
             placeholderTextColor="#94a3d7"
             style={styles.input}
+            autoFocus
+            selection={{ start: 0, end: initialName.length }}
           />
 
           <View style={styles.actions}>
