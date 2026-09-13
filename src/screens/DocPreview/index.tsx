@@ -7,13 +7,19 @@ import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StaticScreenProps } from '@react-navigation/native';
 
-interface Props {}
+type Props = StaticScreenProps<{
+  image: {
+    source: string;
+    name: string;
+  };
+}>;
 
-const image =
-  'https://thumbs.dreamstime.com/b/faded-sheet-old-white-paper-14342700.jpg?w=576';
-
-const DocPreview: FC<Props> = () => {
+const DocPreview: FC<Props> = ({ route }) => {
+  const {
+    image: { name, source },
+  } = route.params;
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -28,7 +34,7 @@ const DocPreview: FC<Props> = () => {
         }
       />
       {/* Image */}
-      <PreviewImageCard imageSource={image} />
+      <PreviewImageCard imageSource={source} />
 
       {/* Footer */}
       <ScreenFooter

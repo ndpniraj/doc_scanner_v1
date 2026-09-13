@@ -17,9 +17,13 @@ const HomeScreen: FC<Props> = () => {
   const { selectImage } = useImagePicker();
 
   const handleScanDocs = async () => {
+    const image = {
+      name: '',
+      source: '',
+    };
     if (await isIOSSimulator()) {
       const asset = await selectImage();
-      console.log(asset);
+      if (asset?.uri) image.source = asset.uri;
     } else {
       const { scannedImages } = await DocumentScanner.scanDocument();
       if (Array.isArray(scannedImages)) {
@@ -27,7 +31,7 @@ const HomeScreen: FC<Props> = () => {
       }
     }
 
-    // navigation.navigate('DocPreview');
+    navigate('DocPreview', { image });
   };
 
   if (scannedDocs.length)
