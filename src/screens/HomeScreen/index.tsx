@@ -3,6 +3,7 @@ import DocumentScanner from 'react-native-document-scanner-plugin';
 import EmptyDocuments from '@screens/EmptyDocuments';
 import DocumentHome from '@screens/DocumentHome';
 import { Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {}
 
@@ -10,12 +11,15 @@ const documents = [];
 
 const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
+  const navigation = useNavigation();
 
   const handleScanDocs = async () => {
-    const { scannedImages } = await DocumentScanner.scanDocument();
-    if (Array.isArray(scannedImages)) {
-      setScannedDocs(scannedImages);
-    }
+    // const { scannedImages } = await DocumentScanner.scanDocument();
+    // if (Array.isArray(scannedImages)) {
+    //   setScannedDocs(scannedImages);
+    // }
+
+    navigation.navigate('DocPreview');
   };
 
   if (scannedDocs.length)
