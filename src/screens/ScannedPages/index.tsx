@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import CommonHeader from '@/components/CommonHeader';
+import PageBadge from '@/components/PageBadge';
 import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
 import { Colors, Spacing } from '@/theme';
@@ -13,7 +14,7 @@ interface Props {}
 const image =
   'https://thumbs.dreamstime.com/b/faded-sheet-old-white-paper-14342700.jpg?w=576';
 
-const DocPreview: FC<Props> = () => {
+const ScannedPages: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -22,26 +23,26 @@ const DocPreview: FC<Props> = () => {
         rightContent={
           <IconButton
             icon={{
-              name: 'more-vertical',
+              name: 'trash',
             }}
           />
         }
       />
       {/* Image */}
-      <PreviewImageCard imageSource={image} />
+      <PreviewImageCard imageSource={image} badge={<PageBadge />} />
 
       {/* Footer */}
       <ScreenFooter
         leftAction={{
-          title: 'Retake',
+          title: 'Add Page',
           icon: {
-            name: 'undo',
+            name: 'plus',
             size: 30,
             color: Colors.text,
           },
         }}
         rightAction={{
-          title: 'Use Photo',
+          title: 'Done',
         }}
       />
     </SafeAreaView>
@@ -54,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DocPreview;
+export default ScannedPages;

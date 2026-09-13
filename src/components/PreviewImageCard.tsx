@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     top: 12,
     alignItems: 'center',
     zIndex: 1,
-    backgroundColor: 'red',
   },
   cropButton: {
     position: 'absolute',
