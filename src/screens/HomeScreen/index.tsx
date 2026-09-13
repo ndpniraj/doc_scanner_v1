@@ -2,8 +2,9 @@ import { FC, useState } from 'react';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import EmptyDocuments from '@screens/EmptyDocuments';
 import DocumentHome from '@screens/DocumentHome';
-import { Image } from 'react-native';
+import { Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { isIOSSimulator } from '@/utils/helper';
 
 interface Props {}
 
@@ -14,12 +15,16 @@ const HomeScreen: FC<Props> = () => {
   const navigation = useNavigation();
 
   const handleScanDocs = async () => {
-    // const { scannedImages } = await DocumentScanner.scanDocument();
-    // if (Array.isArray(scannedImages)) {
-    //   setScannedDocs(scannedImages);
-    // }
+    if (await isIOSSimulator()) {
+      Alert.alert('Yes');
+    } else {
+      const { scannedImages } = await DocumentScanner.scanDocument();
+      if (Array.isArray(scannedImages)) {
+        setScannedDocs(scannedImages);
+      }
+    }
 
-    navigation.navigate('DocPreview');
+    // navigation.navigate('DocPreview');
   };
 
   if (scannedDocs.length)
