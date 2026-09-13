@@ -10,7 +10,8 @@ const App = () => {
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       {/* <AppEntryScreen /> */}
-      <ScannedPages />
+      {/* <ScannedPages /> */}
+      {/* <DocPreview /> */}
     </SafeAreaProvider>
   );
 };
