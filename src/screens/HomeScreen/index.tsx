@@ -5,6 +5,7 @@ import DocumentHome from '@screens/DocumentHome';
 import { Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { isIOSSimulator } from '@/utils/helper';
+import useImagePicker from '@/hooks/useImagePicker';
 
 interface Props {}
 
@@ -12,11 +13,13 @@ const documents = [];
 
 const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
+  const { selectImage } = useImagePicker();
 
   const handleScanDocs = async () => {
     if (await isIOSSimulator()) {
-      Alert.alert('Yes');
+      const asset = await selectImage();
+      console.log(asset);
     } else {
       const { scannedImages } = await DocumentScanner.scanDocument();
       if (Array.isArray(scannedImages)) {
