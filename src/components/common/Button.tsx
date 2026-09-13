@@ -6,7 +6,7 @@ import {
   EvilIconsIconName,
 } from '@react-native-vector-icons/evil-icons';
 
-type IconOptions = {
+export type IconOptions = {
   name: EvilIconsIconName;
   size?: number;
   color?: TextStyle['color'];

@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import PreviewHeader from '@/components/PreviewHeader';
 import PreviewImageCard from '@/components/PreviewImageCard';
+import ScreenFooter from '@/components/ScreenFooter';
 import { Colors, Spacing } from '@/theme';
 import IconButton from '@common_comp/IconButton';
 import { FC } from 'react';
@@ -24,35 +25,25 @@ const DocPreview: FC<Props> = () => {
       />
 
       {/* Footer */}
-
-      <View style={styles.footer}>
-        <View style={styles.footerBtn}>
-          <Button
-            showIcon
-            icon={{ name: 'undo', size: 30 }}
-            title="Retake"
-            reverseStyle
-            enableShadow
-          />
-        </View>
-        <View style={styles.footerBtn}>
-          <Button title="Use Photo" />
-        </View>
-      </View>
+      <ScreenFooter
+        leftAction={{
+          title: 'Retake',
+          icon: {
+            name: 'undo',
+            size: 30,
+            color: Colors.text,
+          },
+        }}
+        rightAction={{
+          title: 'Use Photo',
+        }}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  footer: {
-    flexDirection: 'row',
-    padding: Spacing.lg,
-    gap: Spacing.lg,
-  },
-  footerBtn: {
     flex: 1,
   },
 });
