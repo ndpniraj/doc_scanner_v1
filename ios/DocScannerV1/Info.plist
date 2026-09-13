@@ -56,6 +56,8 @@
 	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera to take document photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to access your photo library to select document photos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>EvilIcons.ttf</string>
