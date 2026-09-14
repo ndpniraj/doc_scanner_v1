@@ -20,3 +20,11 @@ export interface BuildDocumentRecordParams {
   filePath: string;
   group: DocumentGroupRef;
 }
+
+export interface DocumentContextType {
+  createNewDocument(
+    filePath: string,
+    docName: string,
+    groupId?: string,
+  ): DocumentGroup;
+}

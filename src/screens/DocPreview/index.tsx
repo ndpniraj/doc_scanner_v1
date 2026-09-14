@@ -9,6 +9,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StaticScreenProps } from '@react-navigation/native';
 import DocNameModal from '@/components/DocNameModal';
+import { useDocument } from '@/context/DocumentProvider';
 
 type Props = StaticScreenProps<{
   image: {
@@ -22,9 +23,21 @@ const DocPreview: FC<Props> = ({ route }) => {
     image: { name, source },
   } = route.params;
   const [showDocNameModal, setShowDocNameModal] = useState(true);
+  const [docName, setDocName] = useState<string>();
+  const { createNewDocument } = useDocument();
+
+  const handleUsePhotoPress = () => {
+    const documentGroup = createNewDocument(source, docName || name);
+    console.log(documentGroup);
+  };
 
   const hideDocNameModal = () => {
     setShowDocNameModal(false);
+  };
+
+  const handleOnNameSave = (name: string) => {
+    setDocName(name);
+    hideDocNameModal();
   };
 
   return (
@@ -56,6 +69,7 @@ const DocPreview: FC<Props> = ({ route }) => {
           }}
           rightAction={{
             title: 'Use Photo',
+            onPress: handleUsePhotoPress,
           }}
         />
       </SafeAreaView>
@@ -64,7 +78,7 @@ const DocPreview: FC<Props> = ({ route }) => {
         title="Document Name (Helps to find later)"
         onClose={hideDocNameModal}
         visible={showDocNameModal}
-        onSave={() => {}}
+        onSave={handleOnNameSave}
       />
     </>
   );
