@@ -4,7 +4,8 @@ import {
   Document,
   DocumentGroup,
 } from '@/types/document';
-import { getJSON } from './localStorage';
+import { getJSON, setJSON } from './localStorage';
+import { Keys } from './keys';
 
 const getLastDocumentOrderInGroup = (parentId: string) => {
   const docIds = getJSON<DocumentGroup>(parentId)?.docIds;
@@ -28,15 +29,17 @@ const buildDocumentRecord = (param: BuildDocumentRecordParams): Document => {
   };
 };
 
-const insertNewDocument = () => {};
+const insertNewDocument = (document: Document): void => {
+  setJSON(Keys.document(document.id), document);
+};
 
 const upsertDocumentGroup = () => {};
 
 export const createNewDocument = () => {
-  buildDocumentRecord({
+  const document = buildDocumentRecord({
     filePath: '',
     group: { isNewGroup: false, parentId: '' },
   });
-  insertNewDocument();
+  insertNewDocument(document);
   upsertDocumentGroup();
 };
