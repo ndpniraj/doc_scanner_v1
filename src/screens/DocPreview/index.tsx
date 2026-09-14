@@ -45,7 +45,7 @@ const DocPreview: FC<Props> = ({ route }) => {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <CommonHeader
-          pageTitle="Preview"
+          pageTitle={docName || name}
           rightContent={
             <IconButton
               icon={{

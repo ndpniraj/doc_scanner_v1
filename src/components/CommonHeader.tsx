@@ -21,7 +21,11 @@ const CommonHeader: FC<Props> = ({ pageTitle, rightContent }) => {
             }}
           />
         }
-        centerContent={<Text style={styles.pageTitle}>{pageTitle}</Text>}
+        centerContent={
+          <Text numberOfLines={1} style={styles.pageTitle}>
+            {pageTitle}
+          </Text>
+        }
         rightContent={rightContent}
       />
     </View>

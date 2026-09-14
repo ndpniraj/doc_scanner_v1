@@ -43,7 +43,7 @@ const upsertDocumentGroup = (
     ? { ...existingGroup, docIds: [...existingGroup.docIds, document.id] }
     : {
         id: groupId,
-        title: groupId,
+        title: document.name,
         thumbnail: document.filePath,
         docIds: [document.id],
       };
