@@ -17,7 +17,6 @@ type DocumentGroupRef =
   | { isNewGroup: true };
 
 export interface BuildDocumentRecordParams {
-  name: string;
   filePath: string;
   group: DocumentGroupRef;
 }
