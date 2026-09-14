@@ -2,6 +2,9 @@
 #
 .DS_Store
 
+# Custom VS code configuration
+.vscode/
+
 # Xcode
 #
 build/

@@ -4,9 +4,10 @@ import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
 import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
+import { DocumentContext } from '@/context/DocumentProvider';
 import { Colors, Spacing } from '@/theme';
 import IconButton from '@common_comp/IconButton';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -37,6 +38,7 @@ const image =
   'https://thumbs.dreamstime.com/b/faded-sheet-old-white-paper-14342700.jpg?w=576';
 
 const ScannedPages: FC<Props> = () => {
+  const something = useContext(DocumentContext);
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}

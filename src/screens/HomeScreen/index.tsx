@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import EmptyDocuments from '@screens/EmptyDocuments';
 import DocumentHome from '@screens/DocumentHome';
@@ -6,6 +6,7 @@ import { Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { isIOSSimulator } from '@/utils/helper';
 import useImagePicker from '@/hooks/useImagePicker';
+import { DocumentContext } from '@/context/DocumentProvider';
 
 interface Props {}
 
@@ -15,6 +16,9 @@ const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
   const { navigate } = useNavigation();
   const { selectImage } = useImagePicker();
+  const something = useContext(DocumentContext);
+
+  console.log(something);
 
   const handleScanDocs = async () => {
     const image = {
