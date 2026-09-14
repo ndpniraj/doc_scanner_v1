@@ -1,6 +1,8 @@
 import { createMMKV } from 'react-native-mmkv';
 
 // [{id: 'session'}, {id: 'document'}, {id: 'profile info'}]
+// 'document:id': Document
+// 'group:id': DocumentGroup[]
 
 export const storage = createMMKV({
   id: 'scan-document',
