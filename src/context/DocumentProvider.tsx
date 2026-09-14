@@ -16,6 +16,12 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     setActiveDocId(docId);
   };
 
+  const createNewDocument = () => {
+    // build the document: isExisting
+    // store the single doc inside our ls
+    // update doc group inside our ls
+  };
+
   return (
     <DocumentContext.Provider
       value={{
