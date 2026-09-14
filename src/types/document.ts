@@ -11,3 +11,13 @@ export interface DocumentGroup {
   docIds: string[];
   thumbnail?: string;
 }
+
+type DocumentGroupRef =
+  | { isNewGroup: false; parentId: string }
+  | { isNewGroup: true };
+
+export interface BuildDocumentRecordParams {
+  name: string;
+  filePath: string;
+  group: DocumentGroupRef;
+}

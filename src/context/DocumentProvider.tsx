@@ -17,7 +17,6 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
   };
 
   const createNewDocument = () => {
-    // build the document: isExisting
     // store the single doc inside our ls
     // update doc group inside our ls
   };
