@@ -1,10 +1,10 @@
-import { createContext, FC, ReactNode, useState } from 'react';
+import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface DocumentProviderProps {
   children: ReactNode;
 }
 
-export const DocumentContext = createContext<{
+const DocumentContext = createContext<{
   activeDocId?: string;
   updateActiveDocId(docId: string): void;
 } | null>(null);
@@ -26,4 +26,11 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
       {children}
     </DocumentContext.Provider>
   );
+};
+
+export const useDocument = () => {
+  const context = useContext(DocumentContext);
+  if (!context) throw Error();
+
+  return context;
 };
