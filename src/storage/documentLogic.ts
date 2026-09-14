@@ -1,8 +1,15 @@
 import uuid from 'react-native-uuid';
-import { BuildDocumentRecordParams, Document } from '@/types/document';
+import {
+  BuildDocumentRecordParams,
+  Document,
+  DocumentGroup,
+} from '@/types/document';
+import { getJSON } from './localStorage';
 
-const getLastDocumentOrderInGroup = () => {
-  return 0;
+const getLastDocumentOrderInGroup = (parentId: string) => {
+  const docIds = getJSON<DocumentGroup>(parentId)?.docIds;
+  const count = docIds?.length || 0;
+  return count - 1;
 };
 
 const buildDocumentRecord = (param: BuildDocumentRecordParams): Document => {
@@ -11,7 +18,7 @@ const buildDocumentRecord = (param: BuildDocumentRecordParams): Document => {
   const { isNewGroup } = group;
   const parentId = isNewGroup ? uuid.v4() : group.parentId;
 
-  const order = isNewGroup ? 0 : getLastDocumentOrderInGroup() + 1;
+  const order = isNewGroup ? 0 : getLastDocumentOrderInGroup(parentId) + 1;
 
   return {
     id: documentId,
