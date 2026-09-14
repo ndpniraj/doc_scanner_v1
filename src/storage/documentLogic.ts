@@ -33,13 +33,27 @@ const insertNewDocument = (document: Document): void => {
   setJSON(Keys.document(document.id), document);
 };
 
-const upsertDocumentGroup = () => {};
+const upsertDocumentGroup = (document: Document): DocumentGroup => {
+  const groupId = document.parentId;
+  const existingGroup = getJSON<DocumentGroup>(Keys.group(groupId));
 
-export const createNewDocument = () => {
+  const updatedGroup: DocumentGroup = existingGroup
+    ? { ...existingGroup, docIds: [...existingGroup.docIds, document.id] }
+    : {
+        id: groupId,
+        title: groupId,
+        thumbnail: document.filePath,
+        docIds: [document.id],
+      };
+
+  return updatedGroup;
+};
+
+export const createNewDocument = (): DocumentGroup => {
   const document = buildDocumentRecord({
     filePath: '',
     group: { isNewGroup: false, parentId: '' },
   });
   insertNewDocument(document);
-  upsertDocumentGroup();
+  return upsertDocumentGroup(document);
 };
