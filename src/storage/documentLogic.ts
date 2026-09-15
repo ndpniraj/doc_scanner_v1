@@ -48,6 +48,8 @@ const upsertDocumentGroup = (
         docIds: [document.id],
       };
 
+  setJSON(Keys.group(groupId), updatedGroup);
+
   return updatedGroup;
 };
 
