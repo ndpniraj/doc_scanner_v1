@@ -1,3 +1,4 @@
+import DocumentCard from '@/components/DocumentCard';
 import { DocumentGroup } from '@/types/document';
 import { FC } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -11,12 +12,18 @@ const DocumentHome: FC<Props> = ({ documents }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        numColumns={2}
         data={documents}
         renderItem={({ item }) => {
           return (
-            <Pressable>
-              <Text>{item.title}</Text>
-            </Pressable>
+            <DocumentCard
+              document={{
+                id: item.id,
+                name: item.title,
+                thumbnail: item.thumbnail,
+                createdAt: new Date(Date.now()),
+              }}
+            />
           );
         }}
       />
@@ -25,7 +32,9 @@ const DocumentHome: FC<Props> = ({ documents }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
 });
 
 export default DocumentHome;
