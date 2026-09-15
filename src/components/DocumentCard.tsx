@@ -10,11 +10,12 @@ interface Props {
     thumbnail?: string;
     createdAt: Date;
   };
+  onPress(): void;
 }
 
-const DocumentCard: FC<Props> = ({ document }) => {
+const DocumentCard: FC<Props> = ({ document, onPress }) => {
   return (
-    <Pressable style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           resizeMode="contain"

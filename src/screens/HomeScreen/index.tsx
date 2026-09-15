@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { isIOSSimulator } from '@/utils/helper';
 import useImagePicker from '@/hooks/useImagePicker';
 import { useDocument } from '@/context/DocumentProvider';
+import { DocumentGroup } from '@/types/document';
 
 interface Props {}
 
@@ -36,6 +37,8 @@ const HomeScreen: FC<Props> = () => {
     navigate('DocPreview', { image });
   };
 
+  const handleOnDocumentPress = (item: DocumentGroup) => {};
+
   if (scannedDocs.length)
     return (
       <Image
@@ -47,7 +50,13 @@ const HomeScreen: FC<Props> = () => {
   if (!documents.length)
     return <EmptyDocuments onScanBtnPress={handleScanDocs} />;
 
-  return <DocumentHome documents={documents} />;
+  return (
+    <DocumentHome
+      onDocumentPress={handleOnDocumentPress}
+      onNewScanPress={handleScanDocs}
+      documents={documents}
+    />
+  );
 };
 
 export default HomeScreen;
