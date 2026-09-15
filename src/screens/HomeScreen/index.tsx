@@ -34,7 +34,7 @@ const HomeScreen: FC<Props> = () => {
       }
     }
 
-    navigate('DocPreview', { image });
+    if (image.source.trim()) navigate('DocPreview', { image });
   };
 
   const handleOnDocumentPress = (item: DocumentGroup) => {};
