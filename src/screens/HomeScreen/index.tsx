@@ -10,15 +10,12 @@ import { useDocument } from '@/context/DocumentProvider';
 
 interface Props {}
 
-const documents = [];
-
 const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
   const { navigate } = useNavigation();
   const { selectImage } = useImagePicker();
   const { getOldDocs } = useDocument();
-  // const {} = useDocument()
-  console.log(getOldDocs());
+  const documents = getOldDocs();
 
   const handleScanDocs = async () => {
     const image = {
@@ -50,7 +47,7 @@ const HomeScreen: FC<Props> = () => {
   if (!documents.length)
     return <EmptyDocuments onScanBtnPress={handleScanDocs} />;
 
-  return <DocumentHome />;
+  return <DocumentHome documents={documents} />;
 };
 
 export default HomeScreen;
