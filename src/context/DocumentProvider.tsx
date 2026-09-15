@@ -1,6 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { DocumentContextType } from '@/types/document';
-import { createNewDocument as createNewDocumentLogic } from '@/storage/documentLogic';
+import { DocumentContextType, DocumentGroup } from '@/types/document';
+import {
+  createNewDocument as createNewDocumentLogic,
+  fetchAllDocuments,
+} from '@/storage/documentLogic';
 
 interface DocumentProviderProps {
   children: ReactNode;
@@ -10,6 +13,11 @@ const DocumentContext = createContext<DocumentContextType | null>(null);
 
 export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
   const [activeDocId, setActiveDocId] = useState<string>();
+  const [allOldDocs, setAllOldDocs] = useState<DocumentGroup[]>([]);
+
+  const getOldDocs: DocumentContextType['getOldDocs'] = () => {
+    return fetchAllDocuments();
+  };
 
   const updateActiveDocId = (docId: string) => {
     setActiveDocId(docId);
@@ -27,6 +35,7 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     <DocumentContext.Provider
       value={{
         createNewDocument,
+        getOldDocs,
       }}
     >
       {children}

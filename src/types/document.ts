@@ -27,4 +27,5 @@ export interface DocumentContextType {
     docName: string,
     groupId?: string,
   ): DocumentGroup;
+  getOldDocs(): DocumentGroup[];
 }

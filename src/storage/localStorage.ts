@@ -10,7 +10,7 @@ export const storage = createMMKV({
 
 export const getJSON = <T>(key: string): T | undefined => {
   const result = storage.getString(key);
-  return result ? JSON.parse(key) : undefined;
+  return result ? JSON.parse(result) : undefined;
 };
 
 export const setJSON = <T>(key: string, value: T) => {

@@ -4,7 +4,7 @@ import {
   Document,
   DocumentGroup,
 } from '@/types/document';
-import { getJSON, setJSON } from './localStorage';
+import { getJSON, setJSON, storage } from './localStorage';
 import { Keys } from './keys';
 
 const getLastDocumentOrderInGroup = (parentId: string) => {
@@ -66,4 +66,13 @@ export const createNewDocument = (
   });
   insertNewDocument(document);
   return upsertDocumentGroup({ ...document, name: docName });
+};
+
+export const fetchAllDocuments = (): DocumentGroup[] => {
+  const allKeys = storage.getAllKeys();
+  const groupKeys = allKeys.filter(item => item.startsWith('group:'));
+
+  return groupKeys
+    .map(item => getJSON<DocumentGroup>(item))
+    .filter(item => item !== undefined);
 };

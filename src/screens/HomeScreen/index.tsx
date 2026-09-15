@@ -16,7 +16,9 @@ const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
   const { navigate } = useNavigation();
   const { selectImage } = useImagePicker();
+  const { getOldDocs } = useDocument();
   // const {} = useDocument()
+  console.log(getOldDocs());
 
   const handleScanDocs = async () => {
     const image = {
