@@ -1,4 +1,5 @@
 import { Colors } from '@/theme';
+import { formatDate } from '@/utils/date';
 import { FC } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -24,7 +25,7 @@ const DocumentCard: FC<Props> = ({ document }) => {
 
       <View style={styles.bottomContainer}>
         <Text style={styles.title}>{document.name}</Text>
-        <Text style={styles.date}>{document.name}</Text>
+        <Text style={styles.date}>{formatDate(document.createdAt)}</Text>
       </View>
     </Pressable>
   );

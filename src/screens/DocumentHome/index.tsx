@@ -28,7 +28,7 @@ const DocumentHome: FC<Props> = ({ documents }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        numColumns={2}
+        numColumns={NUMBER_OF_COLUMN}
         data={documents.concat([
           { docIds: ['12'], id: '12', title: 'Dummy Data', thumbnail: '' },
           { docIds: ['12'], id: '121', title: 'Dummy Data', thumbnail: '' },
