@@ -1,6 +1,7 @@
 import uuid from 'react-native-uuid';
 import {
   BuildDocumentRecordParams,
+  DetailDocument,
   Document,
   DocumentGroup,
 } from '@/types/document';
@@ -75,4 +76,17 @@ export const fetchAllDocuments = (): DocumentGroup[] => {
   return groupKeys
     .map(item => getJSON<DocumentGroup>(item))
     .filter(item => item !== undefined);
+};
+
+export const fetchDocumentDetail = (groupId: string): DetailDocument | null => {
+  const documentGroup = getJSON<DocumentGroup>(Keys.group(groupId));
+  if (!documentGroup) return null;
+
+  return {
+    id: documentGroup.id,
+    name: documentGroup.title,
+    documents: documentGroup.docIds
+      .map(item => getJSON<Document>(Keys.document(item)))
+      .filter(item => item !== undefined),
+  };
 };

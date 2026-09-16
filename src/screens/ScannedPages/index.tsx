@@ -39,6 +39,7 @@ const image =
 
 const ScannedPages: FC<Props> = () => {
   const { getActiveDoc } = useDocument();
+  console.log(getActiveDoc());
 
   return (
     <SafeAreaView style={styles.container}>

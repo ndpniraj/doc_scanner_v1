@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   DetailDocument,
   DocumentContextType,
@@ -7,6 +14,7 @@ import {
 import {
   createNewDocument as createNewDocumentLogic,
   fetchAllDocuments,
+  fetchDocumentDetail,
 } from '@/storage/documentLogic';
 
 interface DocumentProviderProps {
@@ -40,12 +48,17 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     return createNewDocumentLogic(filePath, docName, groupId);
   };
 
+  useEffect(() => {
+    if (activeDocId) setActiveDoc(fetchDocumentDetail(activeDocId));
+  }, [activeDocId]);
+
   return (
     <DocumentContext.Provider
       value={{
         createNewDocument,
         getOldDocs,
         getActiveDoc,
+        updateActiveDocId,
       }}
     >
       {children}

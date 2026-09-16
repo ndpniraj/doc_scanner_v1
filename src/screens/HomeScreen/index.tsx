@@ -17,7 +17,7 @@ const HomeScreen: FC<Props> = () => {
   const [scannedDocs, setScannedDocs] = useState<string[]>([]);
   const { navigate } = useNavigation();
   const { selectImage } = useImagePicker();
-  const { getOldDocs } = useDocument();
+  const { getOldDocs, updateActiveDocId } = useDocument();
   const documents = getOldDocs();
 
   const handleScanDocs = async () => {
@@ -45,7 +45,10 @@ const HomeScreen: FC<Props> = () => {
     if (image.source.trim()) navigate('DocPreview', { image });
   };
 
-  const handleOnDocumentPress = (item: DocumentGroup) => {};
+  const handleOnDocumentPress = (item: DocumentGroup) => {
+    updateActiveDocId(item.id);
+    navigate('ScannedPages');
+  };
 
   if (!documents.length)
     return <EmptyDocuments onScanBtnPress={handleScanDocs} />;
