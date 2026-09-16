@@ -23,7 +23,7 @@ const PreviewImageCard: FC<Props> = ({
       <View style={styles.imageContainer}>
         {showCrop && (
           <Pressable onPress={onCropPress} style={styles.cropButton}>
-            <Feather name="crop" color="rgba(0, 0, 0, 0.7)" size={25} />
+            <Feather name="crop" color="white" size={25} />
           </Pressable>
         )}
 
@@ -41,10 +41,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: Spacing.lg,
-    backgroundColor: Colors.surface,
   },
   imageContainer: {
-    flex: 1,
+    flex: 0.9,
+    marginVertical: 'auto',
+    backgroundColor: Colors.surface,
   },
   badgeContainer: {
     position: 'absolute',
@@ -59,12 +60,12 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    top: 25,
+    top: -12,
     right: -12,
     zIndex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   image: {
     flex: 1,
