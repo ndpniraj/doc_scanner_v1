@@ -45,7 +45,10 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     docName,
     groupId,
   ) => {
-    return createNewDocumentLogic(filePath, docName, groupId);
+    // it will update the currently active doc everywhere, it will refresh the UI
+    const group = createNewDocumentLogic(filePath, docName, groupId);
+    if (activeDocId) setActiveDoc(fetchDocumentDetail(activeDocId));
+    return group;
   };
 
   useEffect(() => {
