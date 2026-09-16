@@ -1,5 +1,7 @@
 import { FC, useContext, useState } from 'react';
-import DocumentScanner from 'react-native-document-scanner-plugin';
+import DocumentScanner, {
+  ResponseType,
+} from 'react-native-document-scanner-plugin';
 import EmptyDocuments from '@screens/EmptyDocuments';
 import DocumentHome from '@screens/DocumentHome';
 import { Alert, Image } from 'react-native';
@@ -28,9 +30,15 @@ const HomeScreen: FC<Props> = () => {
       if (asset?.uri) image.source = asset.uri;
       if (asset?.fileName) image.name = asset.fileName;
     } else {
-      const { scannedImages } = await DocumentScanner.scanDocument();
+      const { scannedImages } = await DocumentScanner.scanDocument({
+        maxNumDocuments: 1,
+        responseType: ResponseType.ImageFilePath,
+      });
       if (Array.isArray(scannedImages)) {
-        setScannedDocs(scannedImages);
+        const filePath = scannedImages[0];
+        const splittedName = filePath.split('/');
+        image.name = splittedName[splittedName.length - 1].split('.')[0];
+        image.source = filePath;
       }
     }
 
@@ -38,14 +46,6 @@ const HomeScreen: FC<Props> = () => {
   };
 
   const handleOnDocumentPress = (item: DocumentGroup) => {};
-
-  if (scannedDocs.length)
-    return (
-      <Image
-        source={{ uri: scannedDocs[0] }}
-        style={{ width: 300, height: 300 }}
-      />
-    );
 
   if (!documents.length)
     return <EmptyDocuments onScanBtnPress={handleScanDocs} />;
