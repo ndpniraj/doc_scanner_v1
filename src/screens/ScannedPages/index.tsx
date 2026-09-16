@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import CommonHeader from '@/components/CommonHeader';
+import ConfirmModal from '@/components/ConfirmModal';
 import DocNameModal from '@/components/DocNameModal';
 import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
@@ -22,6 +23,7 @@ const findDocumentIndex = (page: DetailDocument, document: Document) => {
 
 const ScannedPages: FC<Props> = () => {
   const [selectedDoc, setSelectedDoc] = useState<Document>();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showDocNameModal, setShowDocNameModal] = useState(false);
   const { getActiveDoc, createNewDocument, updateDocumentTitle } =
     useDocument();
@@ -42,8 +44,16 @@ const ScannedPages: FC<Props> = () => {
     setShowDocNameModal(false);
   };
 
+  const hideConfirmModal = () => {
+    setShowConfirmModal(false);
+  };
+
   const handleOnEditPress = () => {
     setShowDocNameModal(true);
+  };
+
+  const handleOnDeletePress = () => {
+    setShowConfirmModal(true);
   };
 
   const handleTitleUpdate = (title: string) => {
@@ -67,6 +77,7 @@ const ScannedPages: FC<Props> = () => {
               icon={{
                 name: 'trash',
               }}
+              onPress={handleOnDeletePress}
             />
             <IconButton
               icon={{
@@ -123,6 +134,14 @@ const ScannedPages: FC<Props> = () => {
         onClose={hideNameModal}
         onSave={handleTitleUpdate}
         title="Update Document Name"
+      />
+
+      <ConfirmModal
+        visible={showConfirmModal}
+        onClose={hideConfirmModal}
+        onConfirm={hideConfirmModal}
+        title="Are you sure?"
+        subtitle="This will remove this document permanently!"
       />
     </SafeAreaView>
   );
