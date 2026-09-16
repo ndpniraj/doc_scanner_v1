@@ -9,7 +9,7 @@ import { getJSON, setJSON, storage } from './localStorage';
 import { Keys } from './keys';
 
 const getLastDocumentOrderInGroup = (parentId: string) => {
-  const docIds = getJSON<DocumentGroup>(parentId)?.docIds;
+  const docIds = getJSON<DocumentGroup>(Keys.group(parentId))?.docIds;
   const count = docIds?.length || 0;
   return count - 1;
 };

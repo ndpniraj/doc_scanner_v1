@@ -44,6 +44,8 @@ const ScannedPages: FC<Props> = () => {
 
   const scannedPage = getActiveDoc();
 
+  console.log(scannedPage);
+
   const handleAddNewPage = async () => {
     const image = await scanDocument();
     createNewDocument(image.source, image.name, scannedPage?.id);
