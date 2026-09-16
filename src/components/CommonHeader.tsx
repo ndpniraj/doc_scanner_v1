@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Header, { HeaderProps } from '@common_comp/Header';
 import IconButton from '@common_comp/IconButton';
 import { FontSize, FontWeight, Spacing } from '@/theme';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   pageTitle: string;
@@ -10,6 +11,11 @@ interface Props {
 }
 
 const CommonHeader: FC<Props> = ({ pageTitle, rightContent }) => {
+  const { goBack, canGoBack } = useNavigation();
+  const handleGoBack = () => {
+    if (canGoBack()) goBack();
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -19,6 +25,7 @@ const CommonHeader: FC<Props> = ({ pageTitle, rightContent }) => {
             icon={{
               name: 'chevron-left',
             }}
+            onPress={handleGoBack}
           />
         }
         centerContent={

@@ -9,11 +9,13 @@ interface Props {
     size?: number;
     color?: TextStyle['color'];
   };
+  onPress?(): void;
 }
 
-const IconButton: FC<Props> = ({ size = 55, icon }) => {
+const IconButton: FC<Props> = ({ size = 55, icon, onPress }) => {
   return (
     <Pressable
+      onPress={onPress}
       style={[
         styles.container,
         {
