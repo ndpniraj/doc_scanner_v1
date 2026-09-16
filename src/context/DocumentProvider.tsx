@@ -15,6 +15,7 @@ import {
   createNewDocument as createNewDocumentLogic,
   fetchAllDocuments,
   fetchDocumentDetail,
+  updateDocumentName,
 } from '@/storage/documentLogic';
 
 interface DocumentProviderProps {
@@ -40,6 +41,12 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     setActiveDocId(docId);
   };
 
+  const updateDocumentTitle = (docId: string, newTitle: string) => {
+    updateDocumentName(docId, newTitle);
+    // This will update the UI
+    setActiveDoc(fetchDocumentDetail(docId));
+  };
+
   const createNewDocument: DocumentContextType['createNewDocument'] = (
     filePath,
     docName,
@@ -62,6 +69,7 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
         getOldDocs,
         getActiveDoc,
         updateActiveDocId,
+        updateDocumentTitle,
       }}
     >
       {children}

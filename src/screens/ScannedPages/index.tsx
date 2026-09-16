@@ -23,7 +23,8 @@ const findDocumentIndex = (page: DetailDocument, document: Document) => {
 const ScannedPages: FC<Props> = () => {
   const [selectedDoc, setSelectedDoc] = useState<Document>();
   const [showDocNameModal, setShowDocNameModal] = useState(false);
-  const { getActiveDoc, createNewDocument } = useDocument();
+  const { getActiveDoc, createNewDocument, updateDocumentTitle } =
+    useDocument();
   const { scanDocument } = useScan();
 
   const scannedPage = getActiveDoc();
@@ -37,12 +38,17 @@ const ScannedPages: FC<Props> = () => {
     setSelectedDoc(scannedPage?.documents.find(item => item.id == id));
   };
 
-  const handleNameModalClose = () => {
+  const hideNameModal = () => {
     setShowDocNameModal(false);
   };
 
   const handleOnEditPress = () => {
     setShowDocNameModal(true);
+  };
+
+  const handleTitleUpdate = (title: string) => {
+    if (scannedPage) updateDocumentTitle(scannedPage.id, title);
+    hideNameModal();
   };
 
   if (!scannedPage) return null;
@@ -114,8 +120,8 @@ const ScannedPages: FC<Props> = () => {
       <DocNameModal
         visible={showDocNameModal}
         initialName={scannedPage.name}
-        onClose={handleNameModalClose}
-        onSave={() => {}}
+        onClose={hideNameModal}
+        onSave={handleTitleUpdate}
         title="Update Document Name"
       />
     </SafeAreaView>

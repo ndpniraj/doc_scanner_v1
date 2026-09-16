@@ -37,4 +37,5 @@ export interface DocumentContextType {
   getOldDocs(): DocumentGroup[];
   getActiveDoc(): DetailDocument | null;
   updateActiveDocId(docId: string): void;
+  updateDocumentTitle(docId: string, newTitle: string): void;
 }

@@ -91,3 +91,13 @@ export const fetchDocumentDetail = (groupId: string): DetailDocument | null => {
       .filter(item => item !== undefined),
   };
 };
+
+export const updateDocumentName = (groupId: string, title: string) => {
+  const key = Keys.group(groupId);
+  const group = getJSON<DocumentGroup>(key);
+  if (!group) return;
+
+  group.title = title;
+
+  setJSON(key, group);
+};
