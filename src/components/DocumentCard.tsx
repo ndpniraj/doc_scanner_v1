@@ -25,7 +25,9 @@ const DocumentCard: FC<Props> = ({ document, onPress }) => {
       </View>
 
       <View style={styles.bottomContainer}>
-        <Text style={styles.title}>{document.name}</Text>
+        <Text numberOfLines={2} style={styles.title}>
+          {document.name}
+        </Text>
         <Text style={styles.date}>{formatDate(document.createdAt)}</Text>
       </View>
     </Pressable>
