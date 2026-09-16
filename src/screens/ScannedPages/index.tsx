@@ -4,6 +4,7 @@ import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
 import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
+import { useDocument } from '@/context/DocumentProvider';
 import { Colors, Spacing } from '@/theme';
 import IconButton from '@common_comp/IconButton';
 import { FC, useContext } from 'react';
@@ -37,6 +38,8 @@ const image =
   'https://thumbs.dreamstime.com/b/faded-sheet-old-white-paper-14342700.jpg?w=576';
 
 const ScannedPages: FC<Props> = () => {
+  const { getActiveDoc } = useDocument();
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}

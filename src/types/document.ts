@@ -5,6 +5,12 @@ export interface Document {
   order: number;
 }
 
+export interface DetailDocument {
+  id: string;
+  name: string;
+  documents: Document[];
+}
+
 export interface DocumentGroup {
   id: string;
   title: string;
@@ -28,4 +34,5 @@ export interface DocumentContextType {
     groupId?: string,
   ): DocumentGroup;
   getOldDocs(): DocumentGroup[];
+  getActiveDoc(): DetailDocument | null;
 }
