@@ -39,13 +39,18 @@ const image =
 
 const ScannedPages: FC<Props> = () => {
   const { getActiveDoc } = useDocument();
-  console.log(getActiveDoc());
+  const scannedPage = getActiveDoc();
+
+  if (!scannedPage) return null;
+
+  const { documents, name, id } = scannedPage;
+  const initialPage = documents[0];
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <CommonHeader
-        pageTitle="Scanned Pages"
+        pageTitle={name}
         rightContent={
           <IconButton
             icon={{
@@ -56,11 +61,20 @@ const ScannedPages: FC<Props> = () => {
       />
       {/* Image */}
       <PreviewImageCard
-        imageSource={image}
+        imageSource={initialPage.filePath}
         badge={<PageBadge total={3} current={1} />}
+        showCrop
       />
 
-      <PageThumbnailList pages={pages} selectedId="2" onSelect={() => {}} />
+      <PageThumbnailList
+        pages={documents.map(item => ({
+          id: item.id,
+          imageSource: item.filePath,
+          label: (item.order + 1).toString(),
+        }))}
+        selectedId="2"
+        onSelect={() => {}}
+      />
 
       {/* Footer */}
       <ScreenFooter

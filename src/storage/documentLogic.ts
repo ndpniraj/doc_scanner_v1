@@ -47,6 +47,7 @@ const upsertDocumentGroup = (
         title: document.name,
         thumbnail: document.filePath,
         docIds: [document.id],
+        createdAt: new Date(Date.now()).toDateString(),
       };
 
   setJSON(Keys.group(groupId), updatedGroup);

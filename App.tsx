@@ -8,6 +8,7 @@ import { DocumentProvider } from '@/context/DocumentProvider';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
   return (
     <DocumentProvider>
       <SafeAreaProvider>

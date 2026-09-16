@@ -7,7 +7,7 @@ import IconButton from '@common_comp/IconButton';
 import { FC, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StaticScreenProps } from '@react-navigation/native';
+import { StaticScreenProps, useNavigation } from '@react-navigation/native';
 import DocNameModal from '@/components/DocNameModal';
 import { useDocument } from '@/context/DocumentProvider';
 
@@ -24,11 +24,13 @@ const DocPreview: FC<Props> = ({ route }) => {
   } = route.params;
   const [showDocNameModal, setShowDocNameModal] = useState(true);
   const [docName, setDocName] = useState<string>();
-  const { createNewDocument } = useDocument();
+  const { createNewDocument, updateActiveDocId } = useDocument();
+  const { navigate } = useNavigation();
 
   const handleUsePhotoPress = () => {
     const documentGroup = createNewDocument(source, docName || name);
-    console.log(documentGroup);
+    updateActiveDocId(documentGroup.id);
+    navigate('ScannedPages');
   };
 
   const hideDocNameModal = () => {

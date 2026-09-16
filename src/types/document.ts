@@ -16,6 +16,7 @@ export interface DocumentGroup {
   title: string;
   docIds: string[];
   thumbnail?: string;
+  createdAt: string;
 }
 
 type DocumentGroupRef =

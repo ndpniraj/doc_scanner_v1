@@ -47,7 +47,7 @@ const DocumentHome: FC<Props> = ({
                   id: item.id,
                   name: item.title,
                   thumbnail: item.thumbnail,
-                  createdAt: new Date(Date.now()),
+                  createdAt: new Date(item.createdAt),
                 }}
               />
             </View>
