@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import CommonHeader from '@/components/CommonHeader';
+import DocNameModal from '@/components/DocNameModal';
 import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
 import PreviewImageCard from '@/components/PreviewImageCard';
@@ -21,6 +22,7 @@ const findDocumentIndex = (page: DetailDocument, document: Document) => {
 
 const ScannedPages: FC<Props> = () => {
   const [selectedDoc, setSelectedDoc] = useState<Document>();
+  const [showDocNameModal, setShowDocNameModal] = useState(false);
   const { getActiveDoc, createNewDocument } = useDocument();
   const { scanDocument } = useScan();
 
@@ -35,6 +37,14 @@ const ScannedPages: FC<Props> = () => {
     setSelectedDoc(scannedPage?.documents.find(item => item.id == id));
   };
 
+  const handleNameModalClose = () => {
+    setShowDocNameModal(false);
+  };
+
+  const handleOnEditPress = () => {
+    setShowDocNameModal(true);
+  };
+
   if (!scannedPage) return null;
 
   const { documents, name, id } = scannedPage;
@@ -46,11 +56,19 @@ const ScannedPages: FC<Props> = () => {
       <CommonHeader
         pageTitle={name}
         rightContent={
-          <IconButton
-            icon={{
-              name: 'trash',
-            }}
-          />
+          <View style={styles.headerRightContent}>
+            <IconButton
+              icon={{
+                name: 'trash',
+              }}
+            />
+            <IconButton
+              icon={{
+                name: 'edit-3',
+              }}
+              onPress={handleOnEditPress}
+            />
+          </View>
         }
       />
       {/* Image */}
@@ -92,6 +110,14 @@ const ScannedPages: FC<Props> = () => {
           title: 'Done',
         }}
       />
+
+      <DocNameModal
+        visible={showDocNameModal}
+        initialName={scannedPage.name}
+        onClose={handleNameModalClose}
+        onSave={() => {}}
+        title="Update Document Name"
+      />
     </SafeAreaView>
   );
 };
@@ -99,6 +125,9 @@ const ScannedPages: FC<Props> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headerRightContent: {
+    flexDirection: 'row',
   },
 });
 
