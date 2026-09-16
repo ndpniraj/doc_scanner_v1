@@ -27,6 +27,10 @@ const DocNameModal: FC<Props> = ({
   onSave,
 }) => {
   const [name, setName] = useState('');
+  const [selection, setSelection] = useState<TextInputProps['selection']>({
+    start: 0,
+    end: initialName.length,
+  });
 
   useEffect(() => {
     if (visible) setName(initialName);
@@ -44,7 +48,10 @@ const DocNameModal: FC<Props> = ({
             placeholderTextColor="#94a3d7"
             style={styles.input}
             autoFocus
-            selection={{ start: 0, end: initialName.length }}
+            selection={selection}
+            onSelectionChange={() => {
+              if (name !== initialName) setSelection(undefined);
+            }}
           />
 
           <View style={styles.actions}>
