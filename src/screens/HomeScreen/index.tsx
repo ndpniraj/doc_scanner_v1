@@ -11,6 +11,7 @@ import useImagePicker from '@/hooks/useImagePicker';
 import { useDocument } from '@/context/DocumentProvider';
 import { DocumentGroup } from '@/types/document';
 import useScan from '@/hooks/useScan';
+import { TemporaryDirectoryPath } from '@dr.pogodin/react-native-fs';
 
 interface Props {}
 
@@ -20,7 +21,15 @@ const HomeScreen: FC<Props> = () => {
   const { selectImage } = useImagePicker();
   const { getOldDocs, updateActiveDocId } = useDocument();
   const { scanDocument } = useScan();
-  const documents = getOldDocs();
+  const documents = getOldDocs().map(item => {
+    if (item.thumbnail) {
+      const splittedName = item.thumbnail.split('/');
+      const fileName = splittedName[splittedName.length - 1];
+      item.thumbnail = `${TemporaryDirectoryPath}/${fileName}`;
+    }
+
+    return item;
+  });
 
   const handleScanDocs = async () => {
     const image = await scanDocument();
