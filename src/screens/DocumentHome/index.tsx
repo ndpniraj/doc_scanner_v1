@@ -1,4 +1,5 @@
 import DocumentCard from '@/components/DocumentCard';
+import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors } from '@/theme';
 import { DocumentGroup } from '@/types/document';
 import { Feather } from '@react-native-vector-icons/feather';
@@ -46,7 +47,9 @@ const DocumentHome: FC<Props> = ({
                 document={{
                   id: item.id,
                   name: item.title,
-                  thumbnail: item.thumbnail,
+                  thumbnail: item.thumbnail
+                    ? resolveScannedDocFilePath(item.thumbnail)
+                    : undefined,
                   createdAt: new Date(item.createdAt),
                 }}
               />
