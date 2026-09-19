@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StaticScreenProps, useNavigation } from '@react-navigation/native';
 import DocNameModal from '@/components/DocNameModal';
 import { useDocument } from '@/context/DocumentProvider';
+import useFileStorage from '@/hooks/useFileStorage';
 
 type Props = StaticScreenProps<{
   image: {
@@ -26,9 +27,11 @@ const DocPreview: FC<Props> = ({ route }) => {
   const [docName, setDocName] = useState<string>();
   const { createNewDocument, updateActiveDocId } = useDocument();
   const { navigate } = useNavigation();
+  const { saveDocImage } = useFileStorage();
 
-  const handleUsePhotoPress = () => {
-    const documentGroup = createNewDocument(source, docName || name);
+  const handleUsePhotoPress = async () => {
+    const fileName = await saveDocImage(source, docName || name);
+    const documentGroup = createNewDocument(fileName, docName || name);
     updateActiveDocId(documentGroup.id);
     navigate('ScannedPages');
   };

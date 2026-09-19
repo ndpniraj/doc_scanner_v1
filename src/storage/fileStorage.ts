@@ -56,3 +56,7 @@ export const saveDocumentToPrivateStorage = async (
 
   return `${SCANS_FOLDER}/${finalFileName}`;
 };
+
+export const resolveScannedDocFilePath = (path: string): string => {
+  return `${DocumentDirectoryPath}/${path}`;
+};

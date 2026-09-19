@@ -8,6 +8,7 @@ import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
 import { useDocument } from '@/context/DocumentProvider';
 import useScan from '@/hooks/useScan';
+import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors, Spacing } from '@/theme';
 import { DetailDocument, Document } from '@/types/document';
 import IconButton from '@common_comp/IconButton';
@@ -30,6 +31,7 @@ const ScannedPages: FC<Props> = () => {
   const { scanDocument } = useScan();
 
   const scannedPage = getActiveDoc();
+  console.log(scannedPage);
 
   const handleAddNewPage = async () => {
     const image = await scanDocument();
@@ -90,7 +92,9 @@ const ScannedPages: FC<Props> = () => {
       />
       {/* Image */}
       <PreviewImageCard
-        imageSource={selectedDoc?.filePath || initialPage.filePath}
+        imageSource={resolveScannedDocFilePath(
+          selectedDoc?.filePath || initialPage.filePath,
+        )}
         badge={
           <PageBadge
             total={scannedPage.documents.length}
@@ -105,7 +109,7 @@ const ScannedPages: FC<Props> = () => {
       <PageThumbnailList
         pages={documents.map(item => ({
           id: item.id,
-          imageSource: item.filePath,
+          imageSource: resolveScannedDocFilePath(item.filePath),
           label: (item.order + 1).toString(),
         }))}
         selectedId={selectedDoc?.id || initialPage.id}
