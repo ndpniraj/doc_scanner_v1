@@ -5,6 +5,7 @@ import DocPreview from '@/screens/DocPreview';
 import ScannedPages from '@/screens/ScannedPages';
 import Navigation, { MyTheme } from '@/navigation';
 import { DocumentProvider } from '@/context/DocumentProvider';
+import '@/storage/fileStorage';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

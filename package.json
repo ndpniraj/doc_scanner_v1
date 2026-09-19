@@ -26,7 +26,8 @@
     "react-native-nitro-modules": "^0.37.1",
     "react-native-safe-area-context": "^5.5.2",
     "react-native-screens": "^4.27.0",
-    "react-native-uuid": "^2.0.4"
+    "react-native-uuid": "^2.0.4",
+    "sanitize-filename": "^1.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
