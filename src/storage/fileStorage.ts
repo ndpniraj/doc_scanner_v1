@@ -7,18 +7,24 @@
 // =====================================================================
 
 import {
+  copyFile,
   DocumentDirectoryPath,
   exists,
   mkdir,
+  moveFile,
+  unlink,
 } from '@dr.pogodin/react-native-fs';
 import sanitize from 'sanitize-filename';
 
 const SCANS_FOLDER = 'scans';
 const scansDirPath = `${DocumentDirectoryPath}/${SCANS_FOLDER}`;
 
-const buildScanPath = (title: string, ext: 'png' | 'jpg' = 'jpg'): string => {
+const sanitizeFileName = (
+  title: string,
+  ext: 'png' | 'jpg' = 'jpg',
+): string => {
   const base = sanitize(title).trim().slice(0, 60);
-  return `${scansDirPath}/${base}-${Date.now()}.${ext}`;
+  return `${base}-${Date.now()}.${ext}`;
 };
 
 const ensureScansDirectorExists = async () => {
@@ -33,5 +39,20 @@ export const saveDocumentToPrivateStorage = async (
   fileName?: string,
 ): Promise<string> => {
   await ensureScansDirectorExists();
-  return '';
+  const finalFileName = sanitizeFileName(fileName || 'scan');
+  const destPath = `${scansDirPath}/${finalFileName}`;
+
+  const normalizedSource = sourceUri.startsWith('file://')
+    ? sourceUri.replace('file://', '')
+    : sourceUri;
+
+  try {
+    await moveFile(normalizedSource, destPath);
+  } catch (error) {
+    // in case if move file fails we will just save the copy and remove the file
+    await copyFile(normalizedSource, destPath);
+    await unlink(normalizedSource);
+  }
+
+  return `${SCANS_FOLDER}/${finalFileName}`;
 };
