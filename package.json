@@ -21,6 +21,7 @@
     "react-native": "0.87.1",
     "react-native-device-info": "^15.0.2",
     "react-native-document-scanner-plugin": "^2.0.4",
+    "react-native-fast-opencv": "github:jslok/react-native-fast-opencv#fix/rn-087-jsi-bindings",
     "react-native-image-picker": "^8.2.1",
     "react-native-mmkv": "^4.3.2",
     "react-native-nitro-modules": "^0.37.1",

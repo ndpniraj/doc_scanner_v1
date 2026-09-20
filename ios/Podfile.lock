@@ -27,6 +27,30 @@ PODS:
     - ReactNativeDependencies
   - fast_float (8.0.0):
     - ReactNativeDependencies
+  - FastOpencv (1.0.1):
+    - FastOpenCV-iOS (= 1.0.4)
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-bridging
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - FastOpenCV-iOS (1.0.4)
   - FBLazyVector (0.87.1):
     - React-Core-prebuilt
   - fmt (12.1.0):
@@ -1849,6 +1873,7 @@ DEPENDENCIES:
   - DocumentScanner (from `../node_modules/react-native-document-scanner-plugin`)
   - DoubleConversion (from `build/rndeps-facades/DoubleConversion`)
   - fast_float (from `build/rndeps-facades/fast_float`)
+  - FastOpencv (from `../node_modules/react-native-fast-opencv`)
   - FBLazyVector (from `build/rncore-facades/FBLazyVector`)
   - fmt (from `build/rndeps-facades/fmt`)
   - glog (from `build/rndeps-facades/glog`)
@@ -1944,6 +1969,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FastOpenCV-iOS
     - MMKVCore
 
 EXTERNAL SOURCES:
@@ -1955,6 +1981,8 @@ EXTERNAL SOURCES:
     :path: build/rndeps-facades/DoubleConversion
   fast_float:
     :path: build/rndeps-facades/fast_float
+  FastOpencv:
+    :path: "../node_modules/react-native-fast-opencv"
   FBLazyVector:
     :path: build/rncore-facades/FBLazyVector
   fmt:
@@ -2144,6 +2172,8 @@ SPEC CHECKSUMS:
   DocumentScanner: 15e8aa4efeaf306b96198f9f44cb9c66d766ebf1
   DoubleConversion: 501a575c40c0b50c89685762dd3e415e6bb26fb0
   fast_float: 7c925d1cebf8328d4018d061f49377e9f887e3b4
+  FastOpencv: 5931bd385ae2f74d958316b0ea9c2a2773574808
+  FastOpenCV-iOS: 2057f306db3ad068577e6fca38411f1b1920d71e
   FBLazyVector: e08a27053b503eeb756ea4bd75d570d2f2522a1b
   fmt: ba0886e864ebb21d14c98b2e12e164b8002f5b93
   glog: 3cf7cb46f743c4bc758ae3e6d9c15bd1b4cfd6d4
