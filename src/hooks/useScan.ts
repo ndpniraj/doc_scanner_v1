@@ -3,6 +3,7 @@ import useImagePicker from './useImagePicker';
 import DocumentScanner, {
   ResponseType,
 } from 'react-native-document-scanner-plugin';
+import { Mat } from 'react-native-fast-opencv';
 
 const useScan = () => {
   const { selectImage } = useImagePicker();
@@ -31,7 +32,20 @@ const useScan = () => {
     return image;
   };
 
-  return { scanDocument };
+  const detectDocumentCorners = (base64: string) => {
+    const src = Mat.createFromBase64(base64);
+    return src;
+  };
+
+  return {
+    /**
+     * Opens the document scanner plugin.
+     *
+     * @deprecated Use `detectDocumentCorners` instead.
+     */
+    scanDocument,
+    detectDocumentCorners,
+  };
 };
 
 export default useScan;

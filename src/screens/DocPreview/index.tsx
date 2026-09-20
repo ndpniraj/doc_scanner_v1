@@ -15,6 +15,8 @@ import {
 import DocNameModal from '@/components/DocNameModal';
 import { useDocument } from '@/context/DocumentProvider';
 import useFileStorage from '@/hooks/useFileStorage';
+import useScan from '@/hooks/useScan';
+import { readFile } from '@dr.pogodin/react-native-fs';
 
 type Props = StaticScreenProps<{
   image: {
@@ -29,15 +31,20 @@ const DocPreview: FC<Props> = ({ route }) => {
   } = route.params;
   const [showDocNameModal, setShowDocNameModal] = useState(true);
   const [docName, setDocName] = useState<string>();
+  const [manipulatedImage, setManipulatedImage] = useState<string>();
   const { createNewDocument, updateActiveDocId } = useDocument();
   const navigation = useNavigation();
   const { saveDocImage } = useFileStorage();
+  const { detectDocumentCorners } = useScan();
 
   const handleUsePhotoPress = async () => {
-    const fileName = await saveDocImage(source, docName || name);
-    const documentGroup = createNewDocument(fileName, docName || name);
-    updateActiveDocId(documentGroup.id);
-    navigation.dispatch(StackActions.replace('ScannedPages'));
+    const originalImage = await readFile(source, 'base64');
+    const image = detectDocumentCorners(originalImage);
+    setManipulatedImage(image.toBase64());
+    // const fileName = await saveDocImage(source, docName || name);
+    // const documentGroup = createNewDocument(fileName, docName || name);
+    // updateActiveDocId(documentGroup.id);
+    // navigation.dispatch(StackActions.replace('ScannedPages'));
   };
 
   const hideDocNameModal = () => {
@@ -64,7 +71,10 @@ const DocPreview: FC<Props> = ({ route }) => {
           }
         />
         {/* Image */}
-        <PreviewImageCard imageSource={source} />
+
+        <PreviewImageCard
+          imageSource={`data:image/png;base64,${manipulatedImage}`}
+        />
 
         {/* Footer */}
         <ScreenFooter
