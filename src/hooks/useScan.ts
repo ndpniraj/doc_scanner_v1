@@ -130,17 +130,28 @@ const useScan = () => {
     return dilatedMat;
   };
 
+  const orderCorners = (points: Point[]) => {
+    const pointSum = [...points].sort((a, b) => a.x + a.y - (b.x + b.y));
+    const pointDiff = [...points].sort((a, b) => a.x - a.y - (b.x - b.y));
+
+    return {
+      topLeft: pointSum[0], // smallest x + y
+      bottomRight: pointSum[3], // largest x + y
+      topRight: pointDiff[0], // smallest y - x
+      bottomLeft: pointDiff[3], // largest y - x
+    };
+  };
+
   const detectDocumentCorners = (base64: string): Mat => {
     const srcMat = Mat.createFromBase64(base64);
     const edgesMat = detectEdges(srcMat);
     const dilatedMat = dilateEdges(edgesMat);
 
     const corners = findDocumentContours(dilatedMat);
+    if (!corners) return dilatedMat;
 
-    if (corners) {
-      return drawEdges(base64, corners);
-    }
-    return edgesMat;
+    const orderedCorners = orderCorners(corners.getAll());
+    return drawEdges(base64, corners);
   };
 
   return {
