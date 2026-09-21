@@ -9,6 +9,7 @@ import {
   DataTypes,
   Mat,
   OpenCV,
+  PointVector,
   PointVectorOfVectors,
   RetrievalModes,
   Size,
@@ -41,7 +42,7 @@ const useScan = () => {
     return image;
   };
 
-  const findDocumentContours = (src: Mat) => {
+  const findDocumentContours = (src: Mat): PointVector | null => {
     const contours = PointVectorOfVectors.create();
 
     OpenCV.findContours(
@@ -56,7 +57,18 @@ const useScan = () => {
       return OpenCV.contourArea(b).value - OpenCV.contourArea(a).value;
     });
 
-    // console.log(sortedContours);
+    for (const contour of sortedContours) {
+      const perimeter = OpenCV.arcLength(contour, true).value;
+
+      const approxCurve = PointVector.create();
+      OpenCV.approxPolyDP(contour, approxCurve, perimeter * 0.02, true);
+
+      if (approxCurve.length === 4) {
+        return approxCurve;
+      }
+    }
+
+    return null;
   };
 
   const detectEdges = (src: Mat): Mat => {
@@ -68,7 +80,8 @@ const useScan = () => {
     OpenCV.GaussianBlur(gray, blur, Size.create(3, 3), 0);
     OpenCV.Canny(blur, edges, 50, 150);
 
-    findDocumentContours(edges);
+    const contour = findDocumentContours(edges);
+    console.log(contour?.getAll());
 
     return edges;
   };
