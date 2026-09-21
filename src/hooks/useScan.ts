@@ -41,10 +41,12 @@ const useScan = () => {
   const detectEdges = (src: Mat): Mat => {
     const gray = Mat.create(0, 0, DataTypes.CV_8UC1);
     const blur = Mat.create(0, 0, DataTypes.CV_8UC1);
+    const edges = Mat.create(0, 0, DataTypes.CV_8UC1);
 
     OpenCV.cvtColor(src, gray, ColorConversionCodes.COLOR_BGR2RGB);
-    OpenCV.GaussianBlur(src, blur, Size.create(3, 3), 0);
-    return blur;
+    OpenCV.GaussianBlur(gray, blur, Size.create(3, 3), 0);
+    OpenCV.Canny(blur, edges, 50, 150);
+    return edges;
   };
 
   const detectDocumentCorners = (base64: string) => {
