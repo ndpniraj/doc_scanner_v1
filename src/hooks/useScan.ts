@@ -5,9 +5,12 @@ import DocumentScanner, {
 } from 'react-native-document-scanner-plugin';
 import {
   ColorConversionCodes,
+  ContourApproximationModes,
   DataTypes,
   Mat,
   OpenCV,
+  PointVectorOfVectors,
+  RetrievalModes,
   Size,
 } from 'react-native-fast-opencv';
 
@@ -38,6 +41,24 @@ const useScan = () => {
     return image;
   };
 
+  const findDocumentContours = (src: Mat) => {
+    const contours = PointVectorOfVectors.create();
+
+    OpenCV.findContours(
+      src,
+      contours,
+      RetrievalModes.RETR_EXTERNAL,
+      ContourApproximationModes.CHAIN_APPROX_SIMPLE,
+    );
+
+    const allContours = contours.getAll();
+    const sortedContours = allContours.sort((a, b) => {
+      return OpenCV.contourArea(b).value - OpenCV.contourArea(a).value;
+    });
+
+    // console.log(sortedContours);
+  };
+
   const detectEdges = (src: Mat): Mat => {
     const gray = Mat.create(0, 0, DataTypes.CV_8UC1);
     const blur = Mat.create(0, 0, DataTypes.CV_8UC1);
@@ -46,6 +67,9 @@ const useScan = () => {
     OpenCV.cvtColor(src, gray, ColorConversionCodes.COLOR_BGR2RGB);
     OpenCV.GaussianBlur(gray, blur, Size.create(3, 3), 0);
     OpenCV.Canny(blur, edges, 50, 150);
+
+    findDocumentContours(edges);
+
     return edges;
   };
 
