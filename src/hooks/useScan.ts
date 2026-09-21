@@ -4,11 +4,13 @@ import DocumentScanner, {
   ResponseType,
 } from 'react-native-document-scanner-plugin';
 import {
+  BorderTypes,
   ColorConversionCodes,
   ContourApproximationModes,
   DataTypes,
   LineTypes,
   Mat,
+  MorphShapes,
   OpenCV,
   Point,
   PointVector,
@@ -106,15 +108,39 @@ const useScan = () => {
     return edges;
   };
 
-  const detectDocumentCorners = (base64: string) => {
-    const src = Mat.createFromBase64(base64);
-    const edges = detectEdges(src);
-    const corners = findDocumentContours(edges);
+  const dilateEdges = (src: Mat): Mat => {
+    const dilatedMat = Mat.create(0, 0, DataTypes.CV_8UC1);
+    const kernel = OpenCV.getStructuringElement(
+      MorphShapes.MORPH_RECT,
+      Size.create(5, 5),
+    );
+
+    const color = Scalar.create(4, 255, 207); // BGR
+
+    OpenCV.dilate(
+      src,
+      dilatedMat,
+      kernel,
+      Point.create(-1, -1),
+      2,
+      BorderTypes.BORDER_DEFAULT,
+      color,
+    );
+
+    return dilatedMat;
+  };
+
+  const detectDocumentCorners = (base64: string): Mat => {
+    const srcMat = Mat.createFromBase64(base64);
+    const edgesMat = detectEdges(srcMat);
+    const dilatedMat = dilateEdges(edgesMat);
+
+    const corners = findDocumentContours(dilatedMat);
 
     if (corners) {
-      // return drawEdges(base64, corners);
+      return drawEdges(base64, corners);
     }
-    return edges;
+    return edgesMat;
   };
 
   return {
