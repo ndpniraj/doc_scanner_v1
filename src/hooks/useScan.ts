@@ -7,11 +7,14 @@ import {
   ColorConversionCodes,
   ContourApproximationModes,
   DataTypes,
+  LineTypes,
   Mat,
   OpenCV,
+  Point,
   PointVector,
   PointVectorOfVectors,
   RetrievalModes,
+  Scalar,
   Size,
 } from 'react-native-fast-opencv';
 
@@ -71,6 +74,26 @@ const useScan = () => {
     return null;
   };
 
+  const drawEdges = (src: string, documentCorners: PointVector) => {
+    const debugMat = Mat.createFromBase64(src);
+    const color = Scalar.create(4, 255, 207); // BGR
+
+    const points = documentCorners.getAll();
+
+    points.forEach(point => {
+      OpenCV.circle(
+        debugMat,
+        Point.create(point.x, point.y),
+        20,
+        color,
+        -1,
+        LineTypes.FILLED,
+      );
+    });
+
+    return debugMat;
+  };
+
   const detectEdges = (src: Mat): Mat => {
     const gray = Mat.create(0, 0, DataTypes.CV_8UC1);
     const blur = Mat.create(0, 0, DataTypes.CV_8UC1);
@@ -80,16 +103,18 @@ const useScan = () => {
     OpenCV.GaussianBlur(gray, blur, Size.create(3, 3), 0);
     OpenCV.Canny(blur, edges, 50, 150);
 
-    const contour = findDocumentContours(edges);
-    console.log(contour?.getAll());
-
     return edges;
   };
 
   const detectDocumentCorners = (base64: string) => {
     const src = Mat.createFromBase64(base64);
-    const edge = detectEdges(src);
-    return edge;
+    const edges = detectEdges(src);
+    const corners = findDocumentContours(edges);
+
+    if (corners) {
+      // return drawEdges(base64, corners);
+    }
+    return edges;
   };
 
   return {
