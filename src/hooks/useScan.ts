@@ -3,7 +3,12 @@ import useImagePicker from './useImagePicker';
 import DocumentScanner, {
   ResponseType,
 } from 'react-native-document-scanner-plugin';
-import { Mat } from 'react-native-fast-opencv';
+import {
+  ColorConversionCodes,
+  DataTypes,
+  Mat,
+  OpenCV,
+} from 'react-native-fast-opencv';
 
 const useScan = () => {
   const { selectImage } = useImagePicker();
@@ -32,9 +37,17 @@ const useScan = () => {
     return image;
   };
 
+  const detectEdges = (src: Mat): Mat => {
+    const gray = Mat.create(0, 0, DataTypes.CV_8UC1);
+
+    OpenCV.cvtColor(src, gray, ColorConversionCodes.COLOR_BGR2RGB);
+    return gray;
+  };
+
   const detectDocumentCorners = (base64: string) => {
     const src = Mat.createFromBase64(base64);
-    return src;
+    const edge = detectEdges(src);
+    return edge;
   };
 
   return {
