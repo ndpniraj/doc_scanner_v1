@@ -8,17 +8,35 @@ import {
   ColorConversionCodes,
   ContourApproximationModes,
   DataTypes,
+  DecompTypes,
   LineTypes,
   Mat,
   MorphShapes,
   OpenCV,
   Point,
+  Point2f,
+  Point2fVector,
   PointVector,
   PointVectorOfVectors,
   RetrievalModes,
   Scalar,
   Size,
 } from 'react-native-fast-opencv';
+
+type CPoint = { x: number; y: number };
+type CKey = 'topLeft' | 'bottomRight' | 'topRight' | 'bottomLeft';
+type Corners = Record<CKey, CPoint>;
+
+const distance = (a: CPoint, b: CPoint) => {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+};
+
+const toPoint2Vector = (points: CPoint[]) => {
+  const vector = Point2fVector.create();
+  points.forEach(point => vector.push(Point2f.create(point.x, point.y)));
+
+  return vector;
+};
 
 const useScan = () => {
   const { selectImage } = useImagePicker();
@@ -142,6 +160,36 @@ const useScan = () => {
     };
   };
 
+  const cropDocumentWithPerspective = (base64: string, corners: Corners) => {
+    const { topRight, topLeft, bottomRight, bottomLeft } = corners;
+
+    // 1. Finding how big should be our flat page?
+    // For that we are calculating the width and height.
+    const width = Math.round(
+      Math.max(distance(topLeft, topRight), distance(bottomLeft, bottomRight)),
+    );
+    const height = Math.round(
+      Math.max(distance(topLeft, bottomLeft), distance(topRight, bottomRight)),
+    );
+
+    // 2. FROM: corners in the old image. TO: corners in the new image.
+    const from = toPoint2Vector([topLeft, topRight, bottomRight, bottomLeft]);
+
+    const to = toPoint2Vector([
+      { x: 0, y: 0 }, // new topLeft
+      { x: width - 1, y: 0 }, // new topRight
+      { x: width - 1, y: height - 1 }, // new bottomRight
+      { x: 0, y: height - 1 }, // new bottomLeft
+    ]);
+
+    // (3x3 matrix) or the "recipe" that maps FROM onto TO
+    const matrix = OpenCV.getPerspectiveTransform(
+      from,
+      to,
+      DecompTypes.DECOMP_LU,
+    );
+  };
+
   const detectDocumentCorners = (base64: string): Mat => {
     const srcMat = Mat.createFromBase64(base64);
     const edgesMat = detectEdges(srcMat);
@@ -151,6 +199,7 @@ const useScan = () => {
     if (!corners) return dilatedMat;
 
     const orderedCorners = orderCorners(corners.getAll());
+    cropDocumentWithPerspective(base64, orderedCorners);
     return drawEdges(base64, corners);
   };
 
