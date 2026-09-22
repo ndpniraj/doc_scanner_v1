@@ -53,7 +53,7 @@ const DocPreview: FC<Props> = ({ route }) => {
       const originalSize = await Image.getSize(originalImageSource);
 
       // Save base64 image inside the private storage and get the uri/filePath
-      const croppedFilePath = await saveBase64Image(originalBase64Image);
+      const croppedFilePath = await saveBase64Image(croppedImageRes.data);
 
       // Save the original image and remove it from temp
       const originalFilePath = await saveDocImage(source, docName || name);

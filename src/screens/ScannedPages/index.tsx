@@ -93,7 +93,7 @@ const ScannedPages: FC<Props> = () => {
       {/* Image */}
       <PreviewImageCard
         imageSource={resolveScannedDocFilePath(
-          selectedDoc?.filePath || initialPage.filePath,
+          selectedDoc?.croppedFilePath || initialPage.croppedFilePath,
         )}
         badge={
           <PageBadge
@@ -109,7 +109,7 @@ const ScannedPages: FC<Props> = () => {
       <PageThumbnailList
         pages={documents.map(item => ({
           id: item.id,
-          imageSource: resolveScannedDocFilePath(item.filePath),
+          imageSource: resolveScannedDocFilePath(item.croppedFilePath),
           label: (item.order + 1).toString(),
         }))}
         selectedId={selectedDoc?.id || initialPage.id}
