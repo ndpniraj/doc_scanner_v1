@@ -23,10 +23,7 @@ import {
   Scalar,
   Size,
 } from 'react-native-fast-opencv';
-
-type CPoint = { x: number; y: number };
-type CKey = 'topLeft' | 'bottomRight' | 'topRight' | 'bottomLeft';
-type Corners = Record<CKey, CPoint>;
+import { Corners, CPoint } from '@/types/document';
 
 const distance = (a: CPoint, b: CPoint) => {
   return Math.hypot(a.x - b.x, a.y - b.y);

@@ -1,6 +1,7 @@
 import uuid from 'react-native-uuid';
 import {
   BuildDocumentRecordParams,
+  CreateNewDocument,
   DetailDocument,
   Document,
   DocumentGroup,
@@ -14,9 +15,9 @@ const getLastDocumentOrderInGroup = (parentId: string) => {
   return count - 1;
 };
 
-const buildDocumentRecord = (param: BuildDocumentRecordParams): Document => {
+const buildDocumentRecord = (param: BuildDocumentRecordParams) => {
   const documentId = uuid.v4();
-  const { filePath, group } = param;
+  const { group } = param;
   const { isNewGroup } = group;
   const parentId = isNewGroup ? uuid.v4() : group.parentId;
 
@@ -24,7 +25,6 @@ const buildDocumentRecord = (param: BuildDocumentRecordParams): Document => {
 
   return {
     id: documentId,
-    filePath,
     order,
     parentId,
   };
@@ -45,7 +45,7 @@ const upsertDocumentGroup = (
     : {
         id: groupId,
         title: document.name,
-        thumbnail: document.filePath,
+        thumbnail: document.croppedFilePath,
         docIds: [document.id],
         createdAt: new Date(Date.now()).toDateString(),
       };
@@ -55,19 +55,19 @@ const upsertDocumentGroup = (
   return updatedGroup;
 };
 
-export const createNewDocument = (
-  filePath: string,
-  docName: string,
-  groupId?: string,
-): DocumentGroup => {
-  const document = buildDocumentRecord({
-    filePath,
-    group: groupId
-      ? { isNewGroup: false, parentId: groupId }
-      : { isNewGroup: true },
+export const createNewDocument: CreateNewDocument = ({
+  parentId,
+  docName,
+  ...rest
+}) => {
+  const documentRecord = buildDocumentRecord({
+    group: parentId ? { isNewGroup: false, parentId } : { isNewGroup: true },
   });
-  insertNewDocument(document);
-  return upsertDocumentGroup({ ...document, name: docName });
+
+  const finalDocument = { ...documentRecord, ...rest };
+
+  insertNewDocument(finalDocument);
+  return upsertDocumentGroup({ name: docName, ...finalDocument });
 };
 
 export const fetchAllDocuments = (): DocumentGroup[] => {

@@ -1,8 +1,15 @@
+type CKey = 'topLeft' | 'bottomRight' | 'topRight' | 'bottomLeft';
+export type CPoint = { x: number; y: number };
+export type Corners = Record<CKey, CPoint>;
+
 export interface Document {
   id: string;
   parentId: string;
-  filePath: string;
   order: number;
+  originalFilePath: string;
+  croppedFilePath: string;
+  originalSize: ImageSize;
+  corners: Corners;
 }
 
 export interface DetailDocument {
@@ -24,7 +31,6 @@ type DocumentGroupRef =
   | { isNewGroup: true };
 
 export interface BuildDocumentRecordParams {
-  filePath: string;
   group: DocumentGroupRef;
 }
 
@@ -39,3 +45,19 @@ export interface DocumentContextType {
   updateActiveDocId(docId: string): void;
   updateDocumentTitle(docId: string, newTitle: string): void;
 }
+
+type ImageSize = {
+  width: number;
+  height: number;
+};
+
+type CreateDocumentProps = {
+  originalFilePath: string;
+  croppedFilePath: string;
+  originalSize: ImageSize;
+  corners: Corners;
+  docName: string;
+  parentId?: string;
+};
+
+export type CreateNewDocument = (props: CreateDocumentProps) => DocumentGroup;
