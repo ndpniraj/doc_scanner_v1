@@ -40,7 +40,7 @@ const DocPreview: FC<Props> = ({ route }) => {
   const handleUsePhotoPress = async () => {
     const originalImage = await readFile(source, 'base64');
     const image = detectDocumentCorners(originalImage);
-    setManipulatedImage(image.toBase64());
+    setManipulatedImage(image);
     // const fileName = await saveDocImage(source, docName || name);
     // const documentGroup = createNewDocument(fileName, docName || name);
     // updateActiveDocId(documentGroup.id);

@@ -9,6 +9,7 @@ import {
   ContourApproximationModes,
   DataTypes,
   DecompTypes,
+  InterpolationFlags,
   LineTypes,
   Mat,
   MorphShapes,
@@ -150,7 +151,7 @@ const useScan = () => {
 
   const orderCorners = (points: Point[]) => {
     const pointSum = [...points].sort((a, b) => a.x + a.y - (b.x + b.y));
-    const pointDiff = [...points].sort((a, b) => a.x - a.y - (b.x - b.y));
+    const pointDiff = [...points].sort((a, b) => a.y - a.x - (b.y - b.x));
 
     return {
       topLeft: pointSum[0], // smallest x + y
@@ -182,25 +183,41 @@ const useScan = () => {
       { x: 0, y: height - 1 }, // new bottomLeft
     ]);
 
-    // (3x3 matrix) or the "recipe" that maps FROM onto TO
+    // 3. (3x3 matrix) or the "recipe" that maps FROM onto TO
     const matrix = OpenCV.getPerspectiveTransform(
       from,
       to,
       DecompTypes.DECOMP_LU,
     );
+
+    // 4. Apply the recipe to the original image
+    const src = Mat.createFromBase64(base64);
+    const transformedMat = Mat.create(0, 0, DataTypes.CV_8UC1);
+
+    OpenCV.warpPerspective(
+      src,
+      transformedMat,
+      matrix,
+      Size.create(width, height),
+      InterpolationFlags.INTER_LINEAR,
+      BorderTypes.BORDER_CONSTANT,
+      Scalar.create(0, 0, 0, 0),
+    );
+
+    return transformedMat.toBase64();
   };
 
-  const detectDocumentCorners = (base64: string): Mat => {
+  const detectDocumentCorners = (base64: string): string => {
     const srcMat = Mat.createFromBase64(base64);
     const edgesMat = detectEdges(srcMat);
     const dilatedMat = dilateEdges(edgesMat);
 
     const corners = findDocumentContours(dilatedMat);
-    if (!corners) return dilatedMat;
+    if (!corners) return dilatedMat.toBase64();
 
     const orderedCorners = orderCorners(corners.getAll());
-    cropDocumentWithPerspective(base64, orderedCorners);
-    return drawEdges(base64, corners);
+    // return drawEdges(base64, corners);
+    return cropDocumentWithPerspective(base64, orderedCorners);
   };
 
   return {
