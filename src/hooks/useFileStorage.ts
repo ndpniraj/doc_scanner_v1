@@ -1,4 +1,7 @@
-import { saveDocumentToPrivateStorage } from '@/storage/fileStorage';
+import {
+  saveBase64ToPrivateStorage,
+  saveDocumentToPrivateStorage,
+} from '@/storage/fileStorage';
 
 const useFileStorage = () => {
   const saveDocImage = async (filePath: string, fileName?: string) => {
@@ -6,7 +9,7 @@ const useFileStorage = () => {
   };
 
   const saveBase64Image = async (base64: string, fileName?: string) => {
-    return '';
+    return await saveBase64ToPrivateStorage(base64, fileName);
   };
 
   return {

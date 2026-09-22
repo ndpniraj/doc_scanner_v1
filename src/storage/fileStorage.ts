@@ -13,6 +13,7 @@ import {
   mkdir,
   moveFile,
   unlink,
+  writeFile,
 } from '@dr.pogodin/react-native-fs';
 import sanitize from 'sanitize-filename';
 
@@ -53,6 +54,22 @@ export const saveDocumentToPrivateStorage = async (
     await copyFile(normalizedSource, destPath);
     await unlink(normalizedSource);
   }
+
+  return `${SCANS_FOLDER}/${finalFileName}`;
+};
+
+export const saveBase64ToPrivateStorage = async (
+  base64: string,
+  fileName = 'cropped',
+): Promise<string> => {
+  await ensureScansDirectorExists();
+  const finalFileName = sanitizeFileName(fileName || 'scan');
+  const destPath = `${scansDirPath}/${finalFileName}`;
+
+  // we want to remove if there is this => data:image/png;base64,
+  const normalizedData = base64.replace(/^data:image\/\w+;base64,/, '');
+
+  await writeFile(destPath, normalizedData, 'base64');
 
   return `${SCANS_FOLDER}/${finalFileName}`;
 };

@@ -41,10 +41,12 @@ const DocPreview: FC<Props> = ({ route }) => {
   const { detectDocumentCorners } = useScan();
 
   const handleUsePhotoPress = async () => {
-    const originalBase64Image = await readFile(originalImageSource, 'base64');
-    const croppedImageRes = detectDocumentCorners(originalBase64Image);
+    try {
+      const originalBase64Image = await readFile(originalImageSource, 'base64');
+      const croppedImageRes = detectDocumentCorners(originalBase64Image);
 
-    if (croppedImageRes) {
+      if (!croppedImageRes) return;
+
       const originalSize = await Image.getSize(originalImageSource);
 
       // Save base64 image inside the private storage and get the uri/filePath
@@ -54,19 +56,20 @@ const DocPreview: FC<Props> = ({ route }) => {
       const originalFilePath = await saveDocImage(source, docName || name);
 
       // Creating and saving document record to our ls
-      createNewDocument({
+      const documentGroup = createNewDocument({
         originalSize,
         corners: croppedImageRes.corners,
         docName: docName || name,
         originalFilePath,
         croppedFilePath,
       });
-    }
 
-    // setManipulatedImage(croppedImageRes);
-    // const documentGroup = createNewDocument(fileName, docName || name);
-    // updateActiveDocId(documentGroup.id);
-    // navigation.dispatch(StackActions.replace('ScannedPages'));
+      setManipulatedImage(croppedImageRes.data);
+      updateActiveDocId(documentGroup.id);
+      navigation.dispatch(StackActions.replace('ScannedPages'));
+    } catch (error) {
+      console.log('DocPreview_Error: ', error);
+    }
   };
 
   const hideDocNameModal = () => {
