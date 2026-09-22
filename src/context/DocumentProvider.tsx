@@ -47,13 +47,9 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     setActiveDoc(fetchDocumentDetail(docId));
   };
 
-  const createNewDocument: DocumentContextType['createNewDocument'] = (
-    filePath,
-    docName,
-    groupId,
-  ) => {
+  const createNewDocument: DocumentContextType['createNewDocument'] = props => {
     // it will update the currently active doc everywhere, it will refresh the UI
-    const group = createNewDocumentLogic(filePath, docName, groupId);
+    const group = createNewDocumentLogic(props);
     if (activeDocId) setActiveDoc(fetchDocumentDetail(activeDocId));
     return group;
   };

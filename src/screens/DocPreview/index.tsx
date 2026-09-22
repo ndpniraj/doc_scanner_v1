@@ -29,19 +29,41 @@ const DocPreview: FC<Props> = ({ route }) => {
   const {
     image: { name, source },
   } = route.params;
+
+  const originalImageSource = source;
+
   const [showDocNameModal, setShowDocNameModal] = useState(true);
   const [docName, setDocName] = useState<string>();
   const [manipulatedImage, setManipulatedImage] = useState<string>();
   const { createNewDocument, updateActiveDocId } = useDocument();
   const navigation = useNavigation();
-  const { saveDocImage } = useFileStorage();
+  const { saveDocImage, saveBase64Image } = useFileStorage();
   const { detectDocumentCorners } = useScan();
 
   const handleUsePhotoPress = async () => {
-    const originalImage = await readFile(source, 'base64');
-    const image = detectDocumentCorners(originalImage);
-    setManipulatedImage(image);
-    // const fileName = await saveDocImage(source, docName || name);
+    const originalBase64Image = await readFile(originalImageSource, 'base64');
+    const croppedImageRes = detectDocumentCorners(originalBase64Image);
+
+    if (croppedImageRes) {
+      const originalSize = await Image.getSize(originalImageSource);
+
+      // Save base64 image inside the private storage and get the uri/filePath
+      const croppedFilePath = await saveBase64Image(originalBase64Image);
+
+      // Save the original image and remove it from temp
+      const originalFilePath = await saveDocImage(source, docName || name);
+
+      // Creating and saving document record to our ls
+      createNewDocument({
+        originalSize,
+        corners: croppedImageRes.corners,
+        docName: docName || name,
+        originalFilePath,
+        croppedFilePath,
+      });
+    }
+
+    // setManipulatedImage(croppedImageRes);
     // const documentGroup = createNewDocument(fileName, docName || name);
     // updateActiveDocId(documentGroup.id);
     // navigation.dispatch(StackActions.replace('ScannedPages'));
@@ -73,7 +95,11 @@ const DocPreview: FC<Props> = ({ route }) => {
         {/* Image */}
 
         <PreviewImageCard
-          imageSource={`data:image/png;base64,${manipulatedImage}`}
+          imageSource={
+            manipulatedImage
+              ? `data:image/png;base64,${manipulatedImage}`
+              : originalImageSource
+          }
         />
 
         {/* Footer */}

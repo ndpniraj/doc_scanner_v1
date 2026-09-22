@@ -5,8 +5,13 @@ const useFileStorage = () => {
     return await saveDocumentToPrivateStorage(filePath, fileName);
   };
 
+  const saveBase64Image = async (base64: string, fileName?: string) => {
+    return '';
+  };
+
   return {
     saveDocImage,
+    saveBase64Image,
   };
 };
 

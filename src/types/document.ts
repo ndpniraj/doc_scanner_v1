@@ -35,11 +35,7 @@ export interface BuildDocumentRecordParams {
 }
 
 export interface DocumentContextType {
-  createNewDocument(
-    filePath: string,
-    docName: string,
-    groupId?: string,
-  ): DocumentGroup;
+  createNewDocument: CreateNewDocument;
   getOldDocs(): DocumentGroup[];
   getActiveDoc(): DetailDocument | null;
   updateActiveDocId(docId: string): void;

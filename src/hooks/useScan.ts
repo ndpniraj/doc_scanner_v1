@@ -204,18 +204,23 @@ const useScan = () => {
     return transformedMat.toBase64();
   };
 
-  const detectDocumentCorners = (base64: string): string => {
+  const detectDocumentCorners = (
+    base64: string,
+  ): { data: string; corners: Corners } | null => {
     const srcMat = Mat.createFromBase64(base64);
     const edgesMat = detectEdges(srcMat);
 
     const dilatedMat = dilateEdges(edgesMat);
 
     const corners = findDocumentContours(dilatedMat);
-    if (!corners) return dilatedMat.toBase64();
+    if (!corners) return null;
 
     const orderedCorners = orderCorners(corners.getAll());
     // return drawEdges(base64, corners).toBase64();
-    return cropDocumentWithPerspective(base64, orderedCorners);
+    return {
+      data: cropDocumentWithPerspective(base64, orderedCorners),
+      corners: orderedCorners,
+    };
   };
 
   return {
