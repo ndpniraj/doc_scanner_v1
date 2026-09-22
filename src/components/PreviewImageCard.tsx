@@ -2,11 +2,13 @@ import { Colors, Spacing } from '@/theme';
 import { Feather } from '@react-native-vector-icons/feather';
 import { FC, ReactNode } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import ScanBusyIndicator from './ScanBusyIndicator';
 
 interface Props {
   imageSource: string;
   badge?: ReactNode;
   showCrop?: boolean;
+  busy?: boolean;
   onCropPress?(): void;
 }
 
@@ -14,6 +16,7 @@ const PreviewImageCard: FC<Props> = ({
   imageSource,
   badge,
   showCrop,
+  busy,
   onCropPress,
 }) => {
   return (
@@ -32,6 +35,8 @@ const PreviewImageCard: FC<Props> = ({
           source={{ uri: imageSource }}
           resizeMode="contain"
         />
+
+        {busy && <ScanBusyIndicator />}
       </View>
     </View>
   );

@@ -35,6 +35,8 @@ const DocPreview: FC<Props> = ({ route }) => {
   const [showDocNameModal, setShowDocNameModal] = useState(true);
   const [docName, setDocName] = useState<string>();
   const [manipulatedImage, setManipulatedImage] = useState<string>();
+  const [scanning, setScanning] = useState(false);
+
   const { createNewDocument, updateActiveDocId } = useDocument();
   const navigation = useNavigation();
   const { saveDocImage, saveBase64Image } = useFileStorage();
@@ -42,6 +44,7 @@ const DocPreview: FC<Props> = ({ route }) => {
 
   const handleUsePhotoPress = async () => {
     try {
+      setScanning(true);
       const originalBase64Image = await readFile(originalImageSource, 'base64');
       const croppedImageRes = detectDocumentCorners(originalBase64Image);
 
@@ -69,6 +72,8 @@ const DocPreview: FC<Props> = ({ route }) => {
       navigation.dispatch(StackActions.replace('ScannedPages'));
     } catch (error) {
       console.log('DocPreview_Error: ', error);
+    } finally {
+      setScanning(false);
     }
   };
 
@@ -103,6 +108,7 @@ const DocPreview: FC<Props> = ({ route }) => {
               ? `data:image/png;base64,${manipulatedImage}`
               : originalImageSource
           }
+          busy={scanning}
         />
 
         {/* Footer */}
