@@ -121,7 +121,7 @@ const useScan = () => {
     const edges = Mat.create(0, 0, DataTypes.CV_8UC1);
 
     OpenCV.cvtColor(src, gray, ColorConversionCodes.COLOR_BGR2RGB);
-    OpenCV.GaussianBlur(gray, blur, Size.create(3, 3), 0);
+    OpenCV.GaussianBlur(gray, blur, Size.create(5, 5), 0);
     OpenCV.Canny(blur, edges, 50, 150);
 
     return edges;
@@ -210,13 +210,14 @@ const useScan = () => {
   const detectDocumentCorners = (base64: string): string => {
     const srcMat = Mat.createFromBase64(base64);
     const edgesMat = detectEdges(srcMat);
+
     const dilatedMat = dilateEdges(edgesMat);
 
     const corners = findDocumentContours(dilatedMat);
     if (!corners) return dilatedMat.toBase64();
 
     const orderedCorners = orderCorners(corners.getAll());
-    // return drawEdges(base64, corners);
+    // return drawEdges(base64, corners).toBase64();
     return cropDocumentWithPerspective(base64, orderedCorners);
   };
 
