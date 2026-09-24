@@ -25,6 +25,11 @@ import {
 } from 'react-native-fast-opencv';
 import { Corners, CPoint } from '@/types/document';
 
+type ImageSelectionResult = {
+  name?: string;
+  source?: string;
+};
+
 const distance = (a: CPoint, b: CPoint) => {
   return Math.hypot(a.x - b.x, a.y - b.y);
 };
@@ -37,7 +42,7 @@ const toPoint2Vector = (points: CPoint[]) => {
 };
 
 const useScan = () => {
-  const { selectImage } = useImagePicker();
+  const { selectImage, captureImage } = useImagePicker();
   const scanDocument = async () => {
     const image = {
       name: 'New Doc',
@@ -61,6 +66,21 @@ const useScan = () => {
     }
 
     return image;
+  };
+
+  const selectImageFromDevice = async () => {
+    const result: ImageSelectionResult = {};
+    if (await isIOSSimulator()) {
+      const asset = await selectImage();
+      if (asset?.uri) result.source = asset.uri;
+      if (asset?.fileName) result.name = asset.fileName;
+    } else {
+      const asset = await captureImage();
+      if (asset?.uri) result.source = asset.uri;
+      if (asset?.fileName) result.name = asset.fileName;
+    }
+
+    return result;
   };
 
   const findDocumentContours = (src: Mat): PointVector | null => {
@@ -231,6 +251,7 @@ const useScan = () => {
      */
     scanDocument,
     detectDocumentCorners,
+    selectImageFromDevice,
   };
 };
 

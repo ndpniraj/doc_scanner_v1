@@ -28,14 +28,13 @@ const ScannedPages: FC<Props> = () => {
   const [showDocNameModal, setShowDocNameModal] = useState(false);
   const { getActiveDoc, createNewDocument, updateDocumentTitle } =
     useDocument();
-  const { scanDocument } = useScan();
+  const { selectImageFromDevice } = useScan();
 
   const scannedPage = getActiveDoc();
-  console.log(scannedPage);
 
   const handleAddNewPage = async () => {
-    const image = await scanDocument();
-    createNewDocument(image.source, image.name, scannedPage?.id);
+    const result = await selectImageFromDevice();
+    // createNewDocument(result.source, result.name, scannedPage?.id);
   };
 
   const handleOnSelect = (id: string) => {

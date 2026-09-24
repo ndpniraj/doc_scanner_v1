@@ -20,13 +20,16 @@ const HomeScreen: FC<Props> = () => {
   const { navigate } = useNavigation();
   const { selectImage } = useImagePicker();
   const { getOldDocs, updateActiveDocId } = useDocument();
-  const { scanDocument } = useScan();
+  const { selectImageFromDevice } = useScan();
   const documents = getOldDocs();
 
   const handleScanDocs = async () => {
-    const image = await scanDocument();
+    const result = await selectImageFromDevice();
 
-    if (image.source.trim()) navigate('DocPreview', { image });
+    if (result.source?.trim())
+      navigate('DocPreview', {
+        image: { name: result.name || 'scan', source: result.source },
+      });
   };
 
   const handleOnDocumentPress = (item: DocumentGroup) => {
