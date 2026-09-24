@@ -7,6 +7,7 @@ import PageThumbnailList from '@/components/PageThumbnailList';
 import PreviewImageCard from '@/components/PreviewImageCard';
 import ScreenFooter from '@/components/ScreenFooter';
 import { useDocument } from '@/context/DocumentProvider';
+import useFileStorage from '@/hooks/useFileStorage';
 import useScan from '@/hooks/useScan';
 import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors, Spacing } from '@/theme';
@@ -28,13 +29,41 @@ const ScannedPages: FC<Props> = () => {
   const [showDocNameModal, setShowDocNameModal] = useState(false);
   const { getActiveDoc, createNewDocument, updateDocumentTitle } =
     useDocument();
-  const { selectImageFromDevice } = useScan();
+  const { selectImageFromDevice, detectDocumentCorners } = useScan();
+  const { saveDocImage, getBase64Data, saveBase64Image } = useFileStorage();
 
   const scannedPage = getActiveDoc();
 
   const handleAddNewPage = async () => {
     const result = await selectImageFromDevice();
-    // createNewDocument(result.source, result.name, scannedPage?.id);
+
+    const originalFilePath = result.source;
+    if (!originalFilePath) return;
+
+    const originalBase64Image = await getBase64Data(originalFilePath);
+    const croppedImageRes = detectDocumentCorners(originalBase64Image);
+
+    if (!croppedImageRes) return;
+
+    const originalSize = await Image.getSize(originalFilePath);
+
+    // Save base64 image inside the private storage and get the uri/filePath
+    const croppedFilePath = await saveBase64Image(croppedImageRes.data);
+
+    const name = result.name || 'scan_page';
+
+    // Save the original image and remove it from temp
+    const filePath = await saveDocImage(originalFilePath, name);
+
+    // Creating and saving document record to our ls
+    const documentGroup = createNewDocument({
+      originalSize,
+      corners: croppedImageRes.corners,
+      docName: name,
+      originalFilePath: filePath,
+      croppedFilePath,
+      parentId: scannedPage?.id,
+    });
   };
 
   const handleOnSelect = (id: string) => {

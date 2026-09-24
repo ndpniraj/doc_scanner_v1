@@ -39,13 +39,13 @@ const DocPreview: FC<Props> = ({ route }) => {
 
   const { createNewDocument, updateActiveDocId } = useDocument();
   const navigation = useNavigation();
-  const { saveDocImage, saveBase64Image } = useFileStorage();
+  const { saveDocImage, saveBase64Image, getBase64Data } = useFileStorage();
   const { detectDocumentCorners } = useScan();
 
   const handleUsePhotoPress = async () => {
     try {
       setScanning(true);
-      const originalBase64Image = await readFile(originalImageSource, 'base64');
+      const originalBase64Image = await getBase64Data(originalImageSource);
       const croppedImageRes = detectDocumentCorners(originalBase64Image);
 
       if (!croppedImageRes) return;
