@@ -64,7 +64,7 @@ const ScannedPages: FC<Props> = () => {
       const filePath = await saveDocImage(originalFilePath, name);
 
       // Creating and saving document record to our ls
-      const documentGroup = createNewDocument({
+      createNewDocument({
         originalSize,
         corners: croppedImageRes.corners,
         docName: name,
@@ -72,6 +72,12 @@ const ScannedPages: FC<Props> = () => {
         croppedFilePath,
         parentId: scannedPage?.id,
       });
+
+      if (scannedPage) {
+        const activeDoc = getActiveDoc(scannedPage.id);
+        const documents = activeDoc?.documents || [];
+        setSelectedDoc(documents[documents.length - 1]);
+      }
 
       // to update the image card UI
       setSelectedImage(undefined);

@@ -29,7 +29,8 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
   const [allOldDocs, setAllOldDocs] = useState<DocumentGroup[]>([]);
   const [activeDoc, setActiveDoc] = useState<DetailDocument | null>(null);
 
-  const getActiveDoc: DocumentContextType['getActiveDoc'] = () => {
+  const getActiveDoc: DocumentContextType['getActiveDoc'] = id => {
+    if (id) return fetchDocumentDetail(id);
     return activeDoc;
   };
 
