@@ -27,6 +27,9 @@ const ScannedPages: FC<Props> = () => {
   const [selectedDoc, setSelectedDoc] = useState<Document>();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showDocNameModal, setShowDocNameModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>();
+  const [scanning, setScanning] = useState(false);
+
   const { getActiveDoc, createNewDocument, updateDocumentTitle } =
     useDocument();
   const { selectImageFromDevice, detectDocumentCorners } = useScan();
@@ -35,35 +38,48 @@ const ScannedPages: FC<Props> = () => {
   const scannedPage = getActiveDoc();
 
   const handleAddNewPage = async () => {
-    const result = await selectImageFromDevice();
+    try {
+      setScanning(true);
+      const result = await selectImageFromDevice();
 
-    const originalFilePath = result.source;
-    if (!originalFilePath) return;
+      const originalFilePath = result.source;
+      if (!originalFilePath) return;
 
-    const originalBase64Image = await getBase64Data(originalFilePath);
-    const croppedImageRes = detectDocumentCorners(originalBase64Image);
+      // to update the image card UI
+      setSelectedImage(originalFilePath);
 
-    if (!croppedImageRes) return;
+      const originalBase64Image = await getBase64Data(originalFilePath);
+      const croppedImageRes = detectDocumentCorners(originalBase64Image);
 
-    const originalSize = await Image.getSize(originalFilePath);
+      if (!croppedImageRes) return;
 
-    // Save base64 image inside the private storage and get the uri/filePath
-    const croppedFilePath = await saveBase64Image(croppedImageRes.data);
+      const originalSize = await Image.getSize(originalFilePath);
 
-    const name = result.name || 'scan_page';
+      // Save base64 image inside the private storage and get the uri/filePath
+      const croppedFilePath = await saveBase64Image(croppedImageRes.data);
 
-    // Save the original image and remove it from temp
-    const filePath = await saveDocImage(originalFilePath, name);
+      const name = result.name || 'scan_page';
 
-    // Creating and saving document record to our ls
-    const documentGroup = createNewDocument({
-      originalSize,
-      corners: croppedImageRes.corners,
-      docName: name,
-      originalFilePath: filePath,
-      croppedFilePath,
-      parentId: scannedPage?.id,
-    });
+      // Save the original image and remove it from temp
+      const filePath = await saveDocImage(originalFilePath, name);
+
+      // Creating and saving document record to our ls
+      const documentGroup = createNewDocument({
+        originalSize,
+        corners: croppedImageRes.corners,
+        docName: name,
+        originalFilePath: filePath,
+        croppedFilePath,
+        parentId: scannedPage?.id,
+      });
+
+      // to update the image card UI
+      setSelectedImage(undefined);
+    } catch (error) {
+      console.log('Adding new page_Error: ', error);
+    } finally {
+      setScanning(false);
+    }
   };
 
   const handleOnSelect = (id: string) => {
@@ -120,6 +136,7 @@ const ScannedPages: FC<Props> = () => {
       />
       {/* Image */}
       <PreviewImageCard
+        busy={scanning}
         imageSource={resolveScannedDocFilePath(
           selectedDoc?.croppedFilePath || initialPage.croppedFilePath,
         )}
