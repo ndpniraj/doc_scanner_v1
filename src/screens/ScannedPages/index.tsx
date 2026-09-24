@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import CommonHeader from '@/components/CommonHeader';
 import ConfirmModal from '@/components/ConfirmModal';
+import CornerEditModal from '@/components/CornerEditModal';
 import DocNameModal from '@/components/DocNameModal';
 import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
@@ -29,6 +30,7 @@ const ScannedPages: FC<Props> = () => {
   const [showDocNameModal, setShowDocNameModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>();
   const [scanning, setScanning] = useState(false);
+  const [showCornerEditor, setShowCornerEditor] = useState(false);
 
   const { getActiveDoc, createNewDocument, updateDocumentTitle } =
     useDocument();
@@ -113,6 +115,14 @@ const ScannedPages: FC<Props> = () => {
     hideNameModal();
   };
 
+  const openCornerEditor = () => {
+    setShowCornerEditor(true);
+  };
+
+  const closeCornerEditor = () => {
+    setShowCornerEditor(false);
+  };
+
   if (!scannedPage) return null;
 
   const { documents, name, id } = scannedPage;
@@ -146,6 +156,7 @@ const ScannedPages: FC<Props> = () => {
         imageSource={resolveScannedDocFilePath(
           selectedDoc?.croppedFilePath || initialPage.croppedFilePath,
         )}
+        onCropPress={openCornerEditor}
         badge={
           <PageBadge
             total={scannedPage.documents.length}
@@ -198,6 +209,8 @@ const ScannedPages: FC<Props> = () => {
         title="Are you sure?"
         subtitle="This will remove this document permanently!"
       />
+
+      <CornerEditModal visible={showCornerEditor} onClose={closeCornerEditor} />
     </SafeAreaView>
   );
 };

@@ -8,12 +8,14 @@ import { useNavigation } from '@react-navigation/native';
 interface Props {
   pageTitle: string;
   rightContent: HeaderProps['rightContent'];
+  onRightPress?(): void;
 }
 
-const CommonHeader: FC<Props> = ({ pageTitle, rightContent }) => {
+const CommonHeader: FC<Props> = ({ pageTitle, rightContent, onRightPress }) => {
   const { goBack, canGoBack } = useNavigation();
   const handleGoBack = () => {
-    if (canGoBack()) goBack();
+    if (onRightPress) onRightPress();
+    else if (canGoBack()) goBack();
   };
 
   return (
