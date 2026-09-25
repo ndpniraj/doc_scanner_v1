@@ -48,7 +48,14 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
 
   if (!document) return null;
 
-  const { originalFilePath } = document;
+  const { originalFilePath, corners } = document;
+
+  const initialCorners = [
+    corners.topLeft,
+    corners.topRight,
+    corners.bottomRight,
+    corners.bottomLeft,
+  ];
 
   return (
     <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
@@ -63,6 +70,8 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
           <CornerEditor
             uri={resolveScannedDocFilePath(originalFilePath)}
             containerSize={containerSize}
+            initialCorners={initialCorners}
+            originalSize={originalSize}
           />
         </View>
       </View>

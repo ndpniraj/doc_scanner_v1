@@ -1,14 +1,22 @@
-import { ImageSize } from '@/types/document';
+import { CPoint, ImageSize } from '@/types/document';
 import { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import CornerHandle from './CornerHandle';
+import { getContainFit } from '@/utils/geometry';
 
 interface Props {
   uri: string;
   containerSize: ImageSize;
+  originalSize: ImageSize;
+  initialCorners: CPoint[];
 }
 
-const CornerEditor: FC<Props> = ({ containerSize, uri }) => {
+const CornerEditor: FC<Props> = ({ originalSize, containerSize, uri }) => {
+  const fit = getContainFit(originalSize, containerSize);
+  console.log('fit: ', fit);
+  console.log('originalSize: ', originalSize);
+  console.log('containerSize: ', containerSize);
+
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={containerSize} />
