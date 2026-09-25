@@ -1,3 +1,5 @@
+export type ImageSize = { width: number; height: number };
+
 type CKey = 'topLeft' | 'bottomRight' | 'topRight' | 'bottomLeft';
 export type CPoint = { x: number; y: number };
 export type Corners = Record<CKey, CPoint>;
@@ -41,11 +43,6 @@ export interface DocumentContextType {
   updateActiveDocId(docId: string): void;
   updateDocumentTitle(docId: string, newTitle: string): void;
 }
-
-type ImageSize = {
-  width: number;
-  height: number;
-};
 
 type CreateDocumentProps = {
   originalFilePath: string;

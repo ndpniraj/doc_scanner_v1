@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button';
 import CommonHeader from '@/components/CommonHeader';
 import ConfirmModal from '@/components/ConfirmModal';
-import CornerEditModal from '@/components/CornerEditModal';
+import CornerEditModal from '@/components/CornerEditorModal';
 import DocNameModal from '@/components/DocNameModal';
 import PageBadge from '@/components/PageBadge';
 import PageThumbnailList from '@/components/PageThumbnailList';
@@ -210,7 +210,11 @@ const ScannedPages: FC<Props> = () => {
         subtitle="This will remove this document permanently!"
       />
 
-      <CornerEditModal visible={showCornerEditor} onClose={closeCornerEditor} />
+      <CornerEditModal
+        documentId={(selectedDoc || initialPage).id}
+        visible={showCornerEditor}
+        onClose={closeCornerEditor}
+      />
     </SafeAreaView>
   );
 };
