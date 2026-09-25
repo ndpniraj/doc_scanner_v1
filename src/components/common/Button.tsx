@@ -5,6 +5,11 @@ import {
   EvilIcons,
   EvilIconsIconName,
 } from '@react-native-vector-icons/evil-icons';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 export type IconOptions = {
   name: EvilIconsIconName;
@@ -40,24 +45,37 @@ const Button: FC<Props> = ({
     ? styles.buttonStyleReverse
     : styles.buttonText;
 
+  const opacity = useSharedValue(1);
+
+  const style = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
+
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.buttonCommon,
-        buttonStyle,
-        pressed && styles.pressed,
-        enableShadow && styles.shadow,
-      ]}
-    >
-      {showIcon && !iconAtRightSide && (
-        <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
-      )}
-      <Text style={[buttonTextStyle, styles.buttonTextCommon]}>{title}</Text>
-      {showIcon && iconAtRightSide && (
-        <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
-      )}
-    </Pressable>
+    <Animated.View style={style}>
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => {
+          opacity.value = pressed
+            ? withTiming(0.5, { duration: 100 })
+            : withTiming(1, { duration: 100 });
+          return [
+            styles.buttonCommon,
+            buttonStyle,
+            // pressed && styles.pressed,
+            enableShadow && styles.shadow,
+          ];
+        }}
+      >
+        {showIcon && !iconAtRightSide && (
+          <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
+        )}
+        <Text style={[buttonTextStyle, styles.buttonTextCommon]}>{title}</Text>
+        {showIcon && iconAtRightSide && (
+          <EvilIcons name={icon.name} size={icon.size} color={icon.color} />
+        )}
+      </Pressable>
+    </Animated.View>
   );
 };
 
