@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import CornerHandle from './CornerHandle';
 import { getContainFit, toDisplayPoint } from '@/utils/geometry';
+import AnimatedLine from './AnimatedLine';
 
 interface Props {
   uri: string;
@@ -34,6 +35,11 @@ const CornerEditor: FC<Props> = ({
       <CornerHandle position={trCorner} />
       <CornerHandle position={brCorner} />
       <CornerHandle position={blCorner} />
+
+      <AnimatedLine p1={tlCorner} p2={trCorner} color="yellow" />
+      <AnimatedLine p1={trCorner} p2={brCorner} color="yellow" />
+      <AnimatedLine p1={brCorner} p2={blCorner} color="yellow" />
+      <AnimatedLine p1={blCorner} p2={tlCorner} color="yellow" />
     </View>
   );
 };
