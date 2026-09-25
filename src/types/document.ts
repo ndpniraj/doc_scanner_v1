@@ -40,6 +40,7 @@ export interface DocumentContextType {
   createNewDocument: CreateNewDocument;
   getOldDocs(): DocumentGroup[];
   getActiveDoc(id?: string): DetailDocument | null;
+  getSingleDoc(id: string): Document | null;
   updateActiveDocId(docId: string): void;
   updateDocumentTitle(docId: string, newTitle: string): void;
 }

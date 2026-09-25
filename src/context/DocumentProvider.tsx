@@ -15,6 +15,7 @@ import {
   createNewDocument as createNewDocumentLogic,
   fetchAllDocuments,
   fetchDocumentDetail,
+  fetchSingleDocument,
   updateDocumentName,
 } from '@/storage/documentLogic';
 
@@ -36,6 +37,10 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
 
   const getOldDocs: DocumentContextType['getOldDocs'] = () => {
     return fetchAllDocuments();
+  };
+
+  const getSingleDoc: DocumentContextType['getSingleDoc'] = id => {
+    return fetchSingleDocument(id);
   };
 
   const updateActiveDocId = (docId: string) => {
@@ -67,6 +72,7 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
         getActiveDoc,
         updateActiveDocId,
         updateDocumentTitle,
+        getSingleDoc,
       }}
     >
       {children}

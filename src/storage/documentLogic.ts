@@ -101,3 +101,7 @@ export const updateDocumentName = (groupId: string, title: string) => {
 
   setJSON(key, group);
 };
+
+export const fetchSingleDocument = (id: string) => {
+  return getJSON<Document>(Keys.document(id)) || null;
+};
