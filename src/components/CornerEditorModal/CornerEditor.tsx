@@ -2,7 +2,7 @@ import { CPoint, ImageSize } from '@/types/document';
 import { FC } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import CornerHandle from './CornerHandle';
-import { getContainFit } from '@/utils/geometry';
+import { getContainFit, toDisplayPoint } from '@/utils/geometry';
 
 interface Props {
   uri: string;
@@ -11,20 +11,29 @@ interface Props {
   initialCorners: CPoint[];
 }
 
-const CornerEditor: FC<Props> = ({ originalSize, containerSize, uri }) => {
+const CornerEditor: FC<Props> = ({
+  originalSize,
+  initialCorners,
+  containerSize,
+  uri,
+}) => {
   const fit = getContainFit(originalSize, containerSize);
-  console.log('fit: ', fit);
-  console.log('originalSize: ', originalSize);
-  console.log('containerSize: ', containerSize);
+
+  const corners = initialCorners.map(point => toDisplayPoint(point, fit));
+
+  const tlCorner = corners[0];
+  const trCorner = corners[1];
+  const brCorner = corners[2];
+  const blCorner = corners[3];
 
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={containerSize} />
 
-      <CornerHandle position={{ x: 100, y: 120 }} />
-      <CornerHandle position={{ x: 250, y: 120 }} />
-      <CornerHandle position={{ x: 100, y: 220 }} />
-      <CornerHandle position={{ x: 200, y: 220 }} />
+      <CornerHandle position={tlCorner} />
+      <CornerHandle position={trCorner} />
+      <CornerHandle position={brCorner} />
+      <CornerHandle position={blCorner} />
     </View>
   );
 };

@@ -4,17 +4,25 @@ import { StyleSheet, View } from 'react-native';
 
 interface Props {
   position: { x: number; y: number };
+  size?: number;
 }
 
 const HANDLE_SIZE = 50;
 const HANDLE_DOT_SIZE = 20;
 
-const CornerHandle: FC<Props> = ({ position }) => {
+const CornerHandle: FC<Props> = ({ position, size = HANDLE_SIZE }) => {
   return (
     <View
       style={[
         styles.handle,
-        { transform: [{ translateX: position.x }, { translateY: position.y }] },
+        {
+          width: size,
+          height: size,
+          transform: [
+            { translateX: position.x - size / 2 },
+            { translateY: position.y - size / 2 },
+          ],
+        },
       ]}
     >
       <View style={styles.handleDot} />
@@ -25,8 +33,6 @@ const CornerHandle: FC<Props> = ({ position }) => {
 const styles = StyleSheet.create({
   handle: {
     position: 'absolute',
-    width: HANDLE_SIZE,
-    height: HANDLE_SIZE,
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
