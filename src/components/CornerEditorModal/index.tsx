@@ -6,6 +6,7 @@ import CornerEditor from './CornerEditor';
 import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { useDocument } from '@/context/DocumentProvider';
 import { Document, ImageSize } from '@/types/document';
+import IconButton from '../common/IconButton';
 
 interface Props {
   documentId: string;
@@ -57,13 +58,22 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
     corners.bottomLeft,
   ];
 
+  const handleCrop = () => {};
+
   return (
     <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
       <View style={[styles.container, { marginTop: insets.top }]}>
         <CommonHeader
           onRightPress={onClose}
-          rightContent={null}
           pageTitle="Corner Editor"
+          rightContent={
+            <IconButton
+              onPress={handleCrop}
+              icon={{
+                name: 'check',
+              }}
+            />
+          }
         />
 
         <View style={styles.editorContainer}>
@@ -72,6 +82,7 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
             containerSize={containerSize}
             initialCorners={initialCorners}
             originalSize={originalSize}
+            onCornerChange={console.log}
           />
         </View>
       </View>

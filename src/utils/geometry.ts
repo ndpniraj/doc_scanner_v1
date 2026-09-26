@@ -26,3 +26,10 @@ export const toDisplayPoint = (point: CPoint, fit: ContainFit) => {
     y: fit.scale * point.y + fit.offsetY,
   };
 };
+
+export const toNaturalPoint = (point: CPoint, fit: ContainFit) => {
+  return {
+    x: (point.x - fit.offsetX) / fit.scale,
+    y: (point.y - fit.offsetY) / fit.scale,
+  };
+};

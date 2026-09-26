@@ -1,4 +1,5 @@
 import { Colors } from '@/theme';
+import { CPoint } from '@/types/document';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
@@ -7,6 +8,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+
+import { scheduleOnRN } from 'react-native-worklets';
 
 interface Props {
   position: { x: SharedValue<number>; y: SharedValue<number> };
@@ -17,12 +20,18 @@ interface Props {
     minY: number;
     maxY: number;
   };
+  onDragEnd(point: CPoint): void;
 }
 
 const HANDLE_SIZE = 50;
 const HANDLE_DOT_SIZE = 20;
 
-const CornerHandle: FC<Props> = ({ bounds, position, size = HANDLE_SIZE }) => {
+const CornerHandle: FC<Props> = ({
+  bounds,
+  position,
+  size = HANDLE_SIZE,
+  onDragEnd,
+}) => {
   const startX = useSharedValue(0);
   const startY = useSharedValue(0);
 
@@ -38,6 +47,9 @@ const CornerHandle: FC<Props> = ({ bounds, position, size = HANDLE_SIZE }) => {
       // update x and y with bounds so that it stays inside our image and not the container
       position.x.value = Math.min(Math.max(newX, bounds.mixX), bounds.maxX);
       position.y.value = Math.min(Math.max(newY, bounds.minY), bounds.maxY);
+    },
+    onFinalize() {
+      scheduleOnRN(onDragEnd, { x: position.x.value, y: position.y.value });
     },
   });
 

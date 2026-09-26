@@ -1,8 +1,12 @@
 import { CPoint, ImageSize } from '@/types/document';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import CornerHandle from './CornerHandle';
-import { getContainFit, toDisplayPoint } from '@/utils/geometry';
+import {
+  getContainFit,
+  toDisplayPoint,
+  toNaturalPoint,
+} from '@/utils/geometry';
 import AnimatedLine from './AnimatedLine';
 import { useSharedValue } from 'react-native-reanimated';
 
@@ -11,6 +15,7 @@ interface Props {
   containerSize: ImageSize;
   originalSize: ImageSize;
   initialCorners: CPoint[];
+  onCornerChange(corners: CPoint[]): void;
 }
 
 const CornerEditor: FC<Props> = ({
@@ -18,10 +23,13 @@ const CornerEditor: FC<Props> = ({
   initialCorners,
   containerSize,
   uri,
+  onCornerChange,
 }) => {
   const fit = getContainFit(originalSize, containerSize);
 
   const corners = initialCorners.map(point => toDisplayPoint(point, fit));
+
+  const cornerRef = useRef(initialCorners);
 
   const tl_x = useSharedValue(corners[0].x);
   const tl_y = useSharedValue(corners[0].y);
@@ -47,14 +55,35 @@ const CornerEditor: FC<Props> = ({
     maxY: fit.offsetY + fit.renderedHeight,
   };
 
+  const handleDragEnd = (index: number, displayPoint: CPoint) => {
+    cornerRef.current[index] = toNaturalPoint(displayPoint, fit);
+    onCornerChange([...cornerRef.current]);
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={containerSize} />
 
-      <CornerHandle position={tlCorner} bounds={bounds} />
-      <CornerHandle position={trCorner} bounds={bounds} />
-      <CornerHandle position={brCorner} bounds={bounds} />
-      <CornerHandle position={blCorner} bounds={bounds} />
+      <CornerHandle
+        position={tlCorner}
+        bounds={bounds}
+        onDragEnd={p => handleDragEnd(0, p)}
+      />
+      <CornerHandle
+        position={trCorner}
+        bounds={bounds}
+        onDragEnd={p => handleDragEnd(1, p)}
+      />
+      <CornerHandle
+        position={brCorner}
+        bounds={bounds}
+        onDragEnd={p => handleDragEnd(2, p)}
+      />
+      <CornerHandle
+        position={blCorner}
+        bounds={bounds}
+        onDragEnd={p => handleDragEnd(3, p)}
+      />
 
       <AnimatedLine p1={tlCorner} p2={trCorner} color="yellow" />
       <AnimatedLine p1={trCorner} p2={brCorner} color="yellow" />
