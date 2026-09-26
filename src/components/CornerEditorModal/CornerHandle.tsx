@@ -11,12 +11,18 @@ import Animated, {
 interface Props {
   position: { x: SharedValue<number>; y: SharedValue<number> };
   size?: number;
+  bounds: {
+    mixX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+  };
 }
 
 const HANDLE_SIZE = 50;
 const HANDLE_DOT_SIZE = 20;
 
-const CornerHandle: FC<Props> = ({ position, size = HANDLE_SIZE }) => {
+const CornerHandle: FC<Props> = ({ bounds, position, size = HANDLE_SIZE }) => {
   const startX = useSharedValue(0);
   const startY = useSharedValue(0);
 
@@ -26,8 +32,12 @@ const CornerHandle: FC<Props> = ({ position, size = HANDLE_SIZE }) => {
       startY.value = position.y.value;
     },
     onUpdate(evt) {
-      position.x.value = startX.value + evt.translationX;
-      position.y.value = startY.value + evt.translationY;
+      const newX = startX.value + evt.translationX;
+      const newY = startY.value + evt.translationY;
+
+      // update x and y with bounds so that it stays inside our image and not the container
+      position.x.value = Math.min(Math.max(newX, bounds.mixX), bounds.maxX);
+      position.y.value = Math.min(Math.max(newY, bounds.minY), bounds.maxY);
     },
   });
 

@@ -40,14 +40,21 @@ const CornerEditor: FC<Props> = ({
   const brCorner = { x: br_x, y: br_y };
   const blCorner = { x: bl_x, y: bl_y };
 
+  const bounds = {
+    mixX: fit.offsetX,
+    maxX: fit.offsetX + fit.renderedWidth,
+    minY: fit.offsetY,
+    maxY: fit.offsetY + fit.renderedHeight,
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={containerSize} />
 
-      <CornerHandle position={tlCorner} />
-      <CornerHandle position={trCorner} />
-      <CornerHandle position={brCorner} />
-      <CornerHandle position={blCorner} />
+      <CornerHandle position={tlCorner} bounds={bounds} />
+      <CornerHandle position={trCorner} bounds={bounds} />
+      <CornerHandle position={brCorner} bounds={bounds} />
+      <CornerHandle position={blCorner} bounds={bounds} />
 
       <AnimatedLine p1={tlCorner} p2={trCorner} color="yellow" />
       <AnimatedLine p1={trCorner} p2={brCorner} color="yellow" />
