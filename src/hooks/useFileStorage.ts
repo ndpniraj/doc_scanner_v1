@@ -2,7 +2,7 @@ import {
   saveBase64ToPrivateStorage,
   saveDocumentToPrivateStorage,
 } from '@/storage/fileStorage';
-import { readFile } from '@dr.pogodin/react-native-fs';
+import { readFile, unlink } from '@dr.pogodin/react-native-fs';
 
 const useFileStorage = () => {
   const saveDocImage = async (filePath: string, fileName?: string) => {
@@ -17,10 +17,15 @@ const useFileStorage = () => {
     return await readFile(filePath, 'base64');
   };
 
+  const deleteFile = async (filePath: string) => {
+    return await unlink(filePath);
+  };
+
   return {
     saveDocImage,
     saveBase64Image,
     getBase64Data,
+    deleteFile,
   };
 };
 
