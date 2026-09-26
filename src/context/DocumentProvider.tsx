@@ -13,6 +13,7 @@ import {
 } from '@/types/document';
 import {
   createNewDocument as createNewDocumentLogic,
+  updateDocumentCorners as updateDocumentCornersLogic,
   fetchAllDocuments,
   fetchDocumentDetail,
   fetchSingleDocument,
@@ -60,6 +61,16 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
     return group;
   };
 
+  const updateDocumentCorners: DocumentContextType['updateDocumentCorners'] = (
+    id,
+    data,
+  ) => {
+    const activeDoc = updateDocumentCornersLogic(id, data);
+    if (activeDoc) setActiveDoc(activeDoc);
+
+    return activeDoc;
+  };
+
   useEffect(() => {
     if (activeDocId) setActiveDoc(fetchDocumentDetail(activeDocId));
   }, [activeDocId]);
@@ -73,6 +84,7 @@ export const DocumentProvider: FC<DocumentProviderProps> = ({ children }) => {
         updateActiveDocId,
         updateDocumentTitle,
         getSingleDoc,
+        updateDocumentCorners,
       }}
     >
       {children}

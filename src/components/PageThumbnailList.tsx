@@ -41,6 +41,7 @@ const PageThumbnailList: FC<Props> = ({ pages, selectedId, onSelect }) => {
                   styles.thumbnail,
                   isSelected && styles.thumbnailSelected,
                 ]}
+                resizeMode="contain"
               />
               <Text style={styles.labelText}>{item.label}</Text>
             </Pressable>

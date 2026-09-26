@@ -1,3 +1,5 @@
+import { UpdateDocumentCorners } from '@/storage/documentLogic';
+
 export type ImageSize = { width: number; height: number };
 
 type CKey = 'topLeft' | 'bottomRight' | 'topRight' | 'bottomLeft';
@@ -43,6 +45,7 @@ export interface DocumentContextType {
   getSingleDoc(id: string): Document | null;
   updateActiveDocId(docId: string): void;
   updateDocumentTitle(docId: string, newTitle: string): void;
+  updateDocumentCorners: UpdateDocumentCorners;
 }
 
 type CreateDocumentProps = {

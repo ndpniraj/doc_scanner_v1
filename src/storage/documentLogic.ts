@@ -1,6 +1,7 @@
 import uuid from 'react-native-uuid';
 import {
   BuildDocumentRecordParams,
+  Corners,
   CreateNewDocument,
   DetailDocument,
   Document,
@@ -45,7 +46,7 @@ const upsertDocumentGroup = (
     : {
         id: groupId,
         title: document.name,
-        thumbnail: document.croppedFilePath,
+        thumbnail: document.originalFilePath,
         docIds: [document.id],
         createdAt: new Date(Date.now()).toDateString(),
       };
@@ -105,3 +106,19 @@ export const updateDocumentName = (groupId: string, title: string) => {
 export const fetchSingleDocument = (id: string) => {
   return getJSON<Document>(Keys.document(id)) || null;
 };
+
+export const updateDocumentCorners = (
+  id: string,
+  data: { corners: Corners; imagePath: string },
+) => {
+  const document = getJSON<Document>(Keys.document(id));
+  if (!document) return null;
+
+  document.croppedFilePath = data.imagePath;
+  document.corners = data.corners;
+
+  setJSON(Keys.document(id), document);
+
+  return fetchDocumentDetail(document.parentId);
+};
+export type UpdateDocumentCorners = typeof updateDocumentCorners;

@@ -82,6 +82,7 @@ const CornerEditModal: FC<Props> = ({
     const croppedImage = cropDocumentWithPerspective(base64, newCorners);
 
     onCropDone(croppedImage, newCorners);
+    onClose();
   };
 
   return (

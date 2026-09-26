@@ -32,8 +32,12 @@ const ScannedPages: FC<Props> = () => {
   const [scanning, setScanning] = useState(false);
   const [showCornerEditor, setShowCornerEditor] = useState(false);
 
-  const { getActiveDoc, createNewDocument, updateDocumentTitle } =
-    useDocument();
+  const {
+    getActiveDoc,
+    updateDocumentCorners,
+    createNewDocument,
+    updateDocumentTitle,
+  } = useDocument();
   const { selectImageFromDevice, detectDocumentCorners } = useScan();
   const { saveDocImage, getBase64Data, deleteFile, saveBase64Image } =
     useFileStorage();
@@ -128,11 +132,23 @@ const ScannedPages: FC<Props> = () => {
     const documentToUpdate = selectedDoc || initialPage;
 
     // save new update/cropped image
-    await saveBase64Image(imageData);
+    const newFilePath = await saveBase64Image(imageData);
     // remove/delete old cropped image
-    await deleteFile(documentToUpdate.croppedFilePath);
+    await deleteFile(
+      resolveScannedDocFilePath(documentToUpdate.croppedFilePath),
+    );
 
     // update the records inside LS
+    updateDocumentCorners(documentToUpdate.id, {
+      corners,
+      imagePath: newFilePath,
+    });
+
+    setSelectedDoc({
+      ...documentToUpdate,
+      corners,
+      croppedFilePath: newFilePath,
+    });
   };
 
   if (!scannedPage) return null;
