@@ -5,18 +5,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CornerEditor from './CornerEditor';
 import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { useDocument } from '@/context/DocumentProvider';
-import { Document, ImageSize } from '@/types/document';
+import { Corners, CPoint, Document, ImageSize } from '@/types/document';
 import IconButton from '../common/IconButton';
+import useScan from '@/hooks/useScan';
+import useFileStorage from '@/hooks/useFileStorage';
 
 interface Props {
   documentId: string;
   visible: boolean;
   onClose(): void;
+  onCropDone(imageData: string, corners: Corners): void;
 }
 
 const SCREEN_PADDING = 20;
 
-const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
+const CornerEditModal: FC<Props> = ({
+  documentId,
+  visible,
+  onClose,
+  onCropDone,
+}) => {
+  const [finalCorners, setFinalCorners] = useState<CPoint[]>([]);
   const [document, setDocument] = useState<Document>();
   const [originalSize, setOriginalSize] = useState<ImageSize>({
     width: 1, // using 1 just to avoid 0/0 where you will get NaN
@@ -26,6 +35,9 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
   const { width: screenWidth } = useWindowDimensions();
 
   const { getSingleDoc } = useDocument();
+  const { cropDocumentWithPerspective, orderCorners } = useScan();
+  const { getBase64Data } = useFileStorage();
+
   const insets = useSafeAreaInsets();
 
   const containerSize = useMemo(() => {
@@ -58,7 +70,19 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
     corners.bottomLeft,
   ];
 
-  const handleCrop = () => {};
+  const handleCrop = async () => {
+    if (!finalCorners.length) return;
+
+    // crop the image and pass it to the consumer of this component with new corners
+    const base64 = await getBase64Data(
+      resolveScannedDocFilePath(originalFilePath),
+    );
+
+    const newCorners = orderCorners(finalCorners);
+    const croppedImage = cropDocumentWithPerspective(base64, newCorners);
+
+    onCropDone(croppedImage, newCorners);
+  };
 
   return (
     <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
@@ -82,7 +106,7 @@ const CornerEditModal: FC<Props> = ({ documentId, visible, onClose }) => {
             containerSize={containerSize}
             initialCorners={initialCorners}
             originalSize={originalSize}
-            onCornerChange={console.log}
+            onCornerChange={setFinalCorners}
           />
         </View>
       </View>

@@ -166,7 +166,7 @@ const useScan = () => {
     return dilatedMat;
   };
 
-  const orderCorners = (points: Point[]) => {
+  const orderCorners = (points: CPoint[]) => {
     const pointSum = [...points].sort((a, b) => a.x + a.y - (b.x + b.y));
     const pointDiff = [...points].sort((a, b) => a.y - a.x - (b.y - b.x));
 
@@ -252,6 +252,8 @@ const useScan = () => {
     scanDocument,
     detectDocumentCorners,
     selectImageFromDevice,
+    cropDocumentWithPerspective,
+    orderCorners,
   };
 };
 

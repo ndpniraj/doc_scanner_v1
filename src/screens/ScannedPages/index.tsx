@@ -12,7 +12,7 @@ import useFileStorage from '@/hooks/useFileStorage';
 import useScan from '@/hooks/useScan';
 import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors, Spacing } from '@/theme';
-import { DetailDocument, Document } from '@/types/document';
+import { Corners, DetailDocument, Document } from '@/types/document';
 import IconButton from '@common_comp/IconButton';
 import { FC, useContext, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
@@ -123,6 +123,8 @@ const ScannedPages: FC<Props> = () => {
     setShowCornerEditor(false);
   };
 
+  const handleCropDone = (imageData: string, corners: Corners) => {};
+
   if (!scannedPage) return null;
 
   const { documents, name, id } = scannedPage;
@@ -214,6 +216,7 @@ const ScannedPages: FC<Props> = () => {
         documentId={(selectedDoc || initialPage).id}
         visible={showCornerEditor}
         onClose={closeCornerEditor}
+        onCropDone={handleCropDone}
       />
     </SafeAreaView>
   );
