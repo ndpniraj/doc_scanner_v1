@@ -1,7 +1,12 @@
 import { Colors } from '@/theme';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { SharedValue } from 'react-native-reanimated';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 interface Props {
   position: { x: SharedValue<number>; y: SharedValue<number> };
@@ -12,22 +17,37 @@ const HANDLE_SIZE = 50;
 const HANDLE_DOT_SIZE = 20;
 
 const CornerHandle: FC<Props> = ({ position, size = HANDLE_SIZE }) => {
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
+
+  const panGesture = usePanGesture({
+    onBegin() {
+      startX.value = position.x.value;
+      startY.value = position.y.value;
+    },
+    onUpdate(evt) {
+      position.x.value = startX.value + evt.translationX;
+      position.y.value = startY.value + evt.translationY;
+    },
+  });
+
+  const style = useAnimatedStyle(() => {
+    return {
+      width: size,
+      height: size,
+      transform: [
+        { translateX: position.x.value - size / 2 },
+        { translateY: position.y.value - size / 2 },
+      ],
+    };
+  });
+
   return (
-    <Animated.View
-      style={[
-        styles.handle,
-        {
-          width: size,
-          height: size,
-          transform: [
-            { translateX: position.x.value - size / 2 },
-            { translateY: position.y.value - size / 2 },
-          ],
-        },
-      ]}
-    >
-      <View style={styles.handleDot} />
-    </Animated.View>
+    <GestureDetector gesture={panGesture}>
+      <Animated.View style={[styles.handle, style]}>
+        <View style={styles.handleDot} />
+      </Animated.View>
+    </GestureDetector>
   );
 };
 
