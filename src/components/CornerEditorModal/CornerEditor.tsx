@@ -4,6 +4,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import CornerHandle from './CornerHandle';
 import { getContainFit, toDisplayPoint } from '@/utils/geometry';
 import AnimatedLine from './AnimatedLine';
+import { useSharedValue } from 'react-native-reanimated';
 
 interface Props {
   uri: string;
@@ -22,10 +23,22 @@ const CornerEditor: FC<Props> = ({
 
   const corners = initialCorners.map(point => toDisplayPoint(point, fit));
 
-  const tlCorner = corners[0];
-  const trCorner = corners[1];
-  const brCorner = corners[2];
-  const blCorner = corners[3];
+  const tl_x = useSharedValue(corners[0].x);
+  const tl_y = useSharedValue(corners[0].y);
+
+  const tr_x = useSharedValue(corners[1].x);
+  const tr_y = useSharedValue(corners[1].y);
+
+  const br_x = useSharedValue(corners[2].x);
+  const br_y = useSharedValue(corners[2].y);
+
+  const bl_x = useSharedValue(corners[3].x);
+  const bl_y = useSharedValue(corners[3].y);
+
+  const tlCorner = { x: tl_x, y: tl_y };
+  const trCorner = { x: tr_x, y: tr_y };
+  const brCorner = { x: br_x, y: br_y };
+  const blCorner = { x: bl_x, y: bl_y };
 
   return (
     <View style={styles.container}>

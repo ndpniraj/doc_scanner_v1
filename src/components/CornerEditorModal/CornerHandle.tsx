@@ -1,9 +1,10 @@
 import { Colors } from '@/theme';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { SharedValue } from 'react-native-reanimated';
 
 interface Props {
-  position: { x: number; y: number };
+  position: { x: SharedValue<number>; y: SharedValue<number> };
   size?: number;
 }
 
@@ -12,21 +13,21 @@ const HANDLE_DOT_SIZE = 20;
 
 const CornerHandle: FC<Props> = ({ position, size = HANDLE_SIZE }) => {
   return (
-    <View
+    <Animated.View
       style={[
         styles.handle,
         {
           width: size,
           height: size,
           transform: [
-            { translateX: position.x - size / 2 },
-            { translateY: position.y - size / 2 },
+            { translateX: position.x.value - size / 2 },
+            { translateY: position.y.value - size / 2 },
           ],
         },
       ]}
     >
       <View style={styles.handleDot} />
-    </View>
+    </Animated.View>
   );
 };
 
