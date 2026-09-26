@@ -152,7 +152,7 @@ const ScannedPages: FC<Props> = () => {
       />
       {/* Image */}
       <PreviewImageCard
-        busy
+        busy={scanning}
         imageSource={resolveScannedDocFilePath(
           selectedDoc?.croppedFilePath || initialPage.croppedFilePath,
         )}
