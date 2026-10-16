@@ -1,11 +1,17 @@
 import IconButton from '@/components/common/IconButton';
 import CommonHeader from '@/components/CommonHeader';
+import PageEditSheet from '@/components/export/PageEditSheet';
+import {
+  DEFAULT_TRANSFORM,
+  PageTransform,
+} from '@/components/export/PageImage';
 import { useDocument } from '@/context/DocumentProvider';
 import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors } from '@/theme';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,11 +28,21 @@ const PADDING = 20;
 const FinalExport: FC<FinalExportProps> = () => {
   const { getActiveDoc } = useDocument();
   const { width, height } = useWindowDimensions();
+  const [selectedId, setSelectedId] = useState<string>();
+  const [transform, setTransform] = useState<Record<string, PageTransform>>({});
 
   const pageWidth = width - PADDING * 2;
   const pageHeight = pageWidth / A4_ASPECT_RATIO;
 
   const docs = getActiveDoc();
+
+  const selectedDoc = docs?.documents.find(item => item.id === selectedId);
+
+  const updateSelectedDoc = (newTransform: PageTransform) => {
+    if (!selectedId) return;
+    setTransform({ ...transform, [selectedId]: newTransform });
+  };
+  const getTransform = (id: string) => transform[id] ?? DEFAULT_TRANSFORM;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,18 +57,27 @@ const FinalExport: FC<FinalExportProps> = () => {
               <View
                 style={[styles.page, { width: pageWidth, height: pageHeight }]}
               >
-                <Image
-                  source={{
-                    uri: resolveScannedDocFilePath(item.croppedFilePath),
-                  }}
-                  style={styles.pageImage}
-                  resizeMode="contain"
-                />
+                <Pressable onPress={() => setSelectedId(item.id)}>
+                  <Image
+                    source={{
+                      uri: resolveScannedDocFilePath(item.croppedFilePath),
+                    }}
+                    style={styles.pageImage}
+                    resizeMode="contain"
+                  />
+                </Pressable>
               </View>
             </View>
           );
         })}
       </ScrollView>
+
+      <PageEditSheet
+        visible={!!selectedDoc}
+        onClose={() => setSelectedId(undefined)}
+        transform={selectedId ? getTransform(selectedId) : DEFAULT_TRANSFORM}
+        onChange={updateSelectedDoc}
+      />
     </SafeAreaView>
   );
 };
