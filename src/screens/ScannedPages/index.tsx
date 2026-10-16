@@ -14,6 +14,7 @@ import { resolveScannedDocFilePath } from '@/storage/fileStorage';
 import { Colors, Spacing } from '@/theme';
 import { Corners, DetailDocument, Document } from '@/types/document';
 import IconButton from '@common_comp/IconButton';
+import { useNavigation } from '@react-navigation/native';
 import { FC, useContext, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -31,6 +32,7 @@ const ScannedPages: FC<Props> = () => {
   const [selectedImage, setSelectedImage] = useState<string>();
   const [scanning, setScanning] = useState(false);
   const [showCornerEditor, setShowCornerEditor] = useState(false);
+  const { navigate } = useNavigation();
 
   const {
     getActiveDoc,
@@ -128,6 +130,10 @@ const ScannedPages: FC<Props> = () => {
     setShowCornerEditor(false);
   };
 
+  const handleOnDone = () => {
+    navigate('FinalExport');
+  };
+
   const handleCropDone = async (imageData: string, corners: Corners) => {
     const documentToUpdate = selectedDoc || initialPage;
 
@@ -219,6 +225,7 @@ const ScannedPages: FC<Props> = () => {
         }}
         rightAction={{
           title: 'Done',
+          onPress: handleOnDone,
         }}
       />
 

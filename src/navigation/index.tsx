@@ -1,5 +1,6 @@
 import AppEntryScreen from '@/screens/AppEntryScreen';
 import DocPreview from '@/screens/DocPreview';
+import FinalExport from '@/screens/FinalExport';
 import ScannedPages from '@/screens/ScannedPages';
 import { Colors } from '@/theme';
 import { createStaticNavigation, DefaultTheme } from '@react-navigation/native';
@@ -20,6 +21,7 @@ const RootStack = createNativeStackNavigator({
     AppEntryScreen,
     DocPreview,
     ScannedPages,
+    FinalExport,
   },
   screenOptions: {
     headerShown: false,
